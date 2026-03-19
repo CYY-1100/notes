@@ -14,21 +14,26 @@
 - 与CSS的设计原则相悖
 - 阻碍样式的可扩展性。其他地方覆盖这个样式，也必须使用 !important
 
-# 通用选择器 (Universal Selector)
-- *
+# 基础选择器
+- 元素 p
+- 类 .class
+- ID #id
+- 通用：*
 
-# 后代选择器
-- .container p
+# 组合选择器
+- 后代 .class p
+- 子 .class > p
+- 相邻 h2 + p
+- 兄弟 h2 ~ p
 
-# 子选择器
-- .container > p
+# 属性选择器
+- [title]
 
-# 相邻
-- selector1 + selector2
-# 普通兄弟
-- 
-# 并集
-# 交集
+# 伪类选择器
+- ：hover
+
+# 伪元素选择器
+- ：：before
 
 # 标准盒模型 (content-box) 与 IE 盒模型 (border-box) 的区别是什么？
 - 标准盒模型：内容 + padding + border + margin
