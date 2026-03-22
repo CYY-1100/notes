@@ -1,13 +1,12 @@
 # 选择器优先级
-- 有`!important`规则的优先级最大。
+- `!important`的优先级最大。
 - `内联`样式表的`权重值`为1000。
 - `id`选择器的权重值为100。
-- `类`选择器的权值为10。
-- `元素`选择器的优先级为1。
-- `通配符`选择器的优先级为0。
-
-- 当`权值相等`时，`后定义优于先定义`的样式表。
-- 在同一组属性设置中表有`!important`规则的优先级最大。
+- `类 .class`选择器的权值为10。
+- `元素 p`选择器的优先级为1。
+- `通配符 *`选择器的优先级为0。
+> 当`权值相等`时，`后定义优于先定义`的样式表。
+> 在同一组属性设置中表有`!important`规则的优先级最大。
 
 # `!important` 的作用及其副作用。
 - 难以维护和调试
@@ -29,10 +28,8 @@
 # 属性选择器
 - [title]
 
-# 伪类选择器
+# 伪类和伪元素选择器
 - ：hover
-
-# 伪元素选择器
 - ：：before
 
 # 标准盒模型 (content-box) 与 IE 盒模型 (border-box) 的区别是什么？
@@ -40,6 +37,8 @@
 - IE盒模型：width(内容 + padding + border) + margin
 
 # 如何通过 box-sizing 属性切换？
+- box-sizing: content-box;
+- box-sizing: border-box;(IE 盒模型)
 
 # 单位换算
 - px: 像素。
@@ -54,15 +53,19 @@
 - rem: 相对于`根元素的字体`大小
 
 #  3 种实现水平垂直居中
-- Flexbox
-- Grid
-- absolute + translate
-- absolute + translate + 负 margin
+- Flex布局。display: flex;justify-content: center; align-items: center; 
+- Grid布局。display: grid; place-items: center;
+- position + transform布局。适用旧浏览器
 
 # Grid 与 Flexbox 的最佳适用场景区别。
+- 维度。Flexbox 擅长一维布局， Grid 擅长二维布局
+- 适用场景对比。线性内容流或动态组件时，Flexbox 是首选。
+
+# flex: 1;是哪些属性的简写
+```css
+flex-grow: 1;
+flex-shrink: 1;
+flex-basis: 0%;
+```
 
 # 纯 CSS 画三角形、圆形、扇形、对话框气泡。
-
-初级岗位：侧重基础概念、盒模型、简单布局（Flex）、常用单位。
-中级岗位：侧重复杂布局（Grid）、响应式、动画、BFC、性能优化基础。
-高级/专家岗位：侧重渲染原理、架构设计、新特性应用、跨浏览器兼容性解决方案、工程化体系。

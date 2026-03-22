@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child">居中的内容</div>
+    </div>
+</body>
+
+</html>
+
+<style>
+    .parent {
+        height: 100vh;
+        background-color: #f0f0f0;
+
+        display: grid;
+        /* 简写属性, 等价于:
+            justify-items: center;
+            align-items: center;
+        */
+        place-items: center;
+    }
+
+    .child {
+        background-color: #2196F3;
+        padding: 20px;
+        border-radius: 5px;
+    }
+</style>

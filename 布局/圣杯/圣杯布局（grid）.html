@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    margin: 0;
+    min-width: 600px;
+  }
+
+  .header, .footer {
+    height: 50px;
+    background-color: #ccc;
+    text-align: center;
+    line-height: 50px;
+  }
+
+  /* 容器设置为网格 */
+  .container {
+    display: grid;
+    /* 定义三列：第一列宽150px，第二列(主内容)占1份剩余空间，第三列宽200px */
+    grid-template-columns: 150px 1fr 200px; 
+  }
+
+  .main {
+    height: 200px;
+    background-color: #b0f9c2;
+  }
+
+  .left {
+    height: 200px;
+    background-color: burlywood;
+  }
+
+  .right {
+    height: 200px;
+    background-color: antiquewhite;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">Header</div>
+  
+  <div class="container">
+    <!-- Grid布局对DOM顺序没有要求 -->
+    <div class="left">Left Sidebar</div>
+    <div class="main">Main Content</div> 
+    <div class="right">Right Sidebar</div>
+  </div>
+  
+  <div class="footer">Footer</div>
+
+</body>
+</html>

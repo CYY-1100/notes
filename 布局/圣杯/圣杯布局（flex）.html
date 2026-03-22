@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    margin: 0;
+    min-width: 600px;
+  }
+
+  .header, .footer {
+    height: 50px;
+    background-color: #ccc;
+    text-align: center;
+    line-height: 50px;
+  }
+
+  .container {
+    display: flex;
+    min-height: 0; /* 防止内容溢出 */
+  }
+
+  .main {
+    /* 这是关键：占据所有剩余空间 */
+    flex: 1; 
+    height: 200px;
+    background-color: #b0f9c2;
+    /* 默认 order: 0 */
+  }
+
+  .left {
+    width: 150px;
+    height: 200px;
+    background-color: burlywood;
+    /* 让它排在最前面 */
+    order: -1; 
+  }
+
+  .right {
+    width: 200px;
+    height: 200px;
+    background-color: antiquewhite;
+    /* 默认 order: 0，但因为出现在main之后，所以排在最后 */
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">Header</div>
+  
+  <div class="container">
+    <!-- DOM顺序：main在前，这是圣杯布局的核心要求 -->
+    <div class="main">Main Content (HTML中在前)</div> 
+    <div class="left">Left Sidebar</div>
+    <div class="right">Right Sidebar</div>
+  </div>
+  
+  <div class="footer">Footer</div>
+
+</body>
+</html>
