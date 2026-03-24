@@ -6,30 +6,26 @@
 - 语义化是指根据内容的结构和意义选用恰当的HTML标签。
 - 好处包括：提升代码可读性和可维护性；增强SEO，利于爬虫解析;
 
-## HTML标签的src属性和href属性有何区别？
-- src用于替换当前元素，浏览器会暂停解析, 将其内容嵌入当前位置。
-- href用于建立当前文档与引用资源的链接关系，不会暂停解析，而是并行加载资源。
+## HTML5新增了哪些语义化标签？
+- <header>, <footer>, <nav>, <article>, <section>, <aside>, <main>, <figure>, <figcaption>
+- 利于 SEO，利于屏幕阅读器（无障碍），代码可读性更强。
 
 ## 行内元素、块级元素和行内块元素的区别？
 - 块级元素独占一行，可以设置宽高。
 - 行内元素与其他元素在同一行，宽高由内容决定，不可设置。
 - 行内块元素可以与其他元素在同一行，可以设置宽高。
 
-## <script> 标签放在 <head> 和 <body> 底部有什么区别？defer 和 async 属性有什么用？
+## `<script>` 标签放在 `<head>` 和 `<body>` 底部有什么区别？defer 和 async 属性有什么用？
 - 加载顺序、阻塞渲染。
 - 使用async/defer属性可以使其异步加载。defer： DOM 解析完成后执行（推荐）。async：下载完立即执行（不保证顺序），可能阻塞 DOM。
 
-## <img>标签的alt和title属性有何异同？
+## `<img>`标签的alt和title属性有何异同？
 - alt是图片无法加载时的替代文本，对SEO和可访问性至关重要。
 - title是鼠标悬停时显示的提示文本。
 
-## HTML5新增了哪些语义化标签？
-- <header>, <footer>, <nav>, <article>, <section>, <aside>, <main>, <figure>, <figcaption>
-- 利于 SEO，利于屏幕阅读器（无障碍），代码可读性更强。
-
 ## HTML5带来了哪些新特性？
 - 语义化标签；
-- 多媒体支持<audio>和<video>；
+- 多媒体支持`<audio>`和`<video>`；
 - Canvas & SVG
 - 本地存储：localStorage, sessionStorage, indexedDB等
 - 表单增强：新的输入类型（email, date, number等）和验证属性（required, pattern等）。
@@ -37,9 +33,8 @@
 - Web Workers：允许在后台运行脚本，不阻塞主线程。
 - WebSocket：提供全双工通信，实现服务器主动推送。
 
-
 ## src 和 href 的区别是什么？
-- src (Source)：替换当前元素内容。
+- src (Source)：替换当前元素内容，浏览器会暂停解析。
 - href (Hypertext Reference)：建立当前文档与外部资源的链接，不会阻塞文档解析。
 
 ## 主流浏览器及其内核分别是什么？
