@@ -18,18 +18,18 @@
 <style>
     .parent {
         height: 100vh;
-        /* 设置一个高度，以便看到效果 */
         background-color: #f0f0f0;
 
-        display: flex;
-        justify-content: center;
-        /* 水平居中 */
-        align-items: center;
-        /* 垂直居中 */
+        display: grid;
+        /* 简写属性, 等价于:
+            justify-items: center;
+            align-items: center;
+        */
+        place-items: center;
     }
 
     .child {
-        background-color: #4CAF50;
+        background-color: #2196F3;
         padding: 20px;
         border-radius: 5px;
     }
