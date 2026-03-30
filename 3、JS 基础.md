@@ -4,6 +4,24 @@
 - instanceof用于判断一个复杂数据类型的实例, 返回一个布尔值
 - 对于更精确的对象类型判断，可以使用 Object.prototype.toString.call() 方法。
 
+## == 和 === 的区别是什么？
+
+## [] == false 的结果是什么？"2" > 1 的结果是什么？
+- 0 == 0， 2>1
+
+## 如何反转一个字符串？如何判断一个字符串是否是回文？
+- reverse
+
+## 严格模式的好处和影响
+- 更安全的编码实践
+- 捕获常见错误
+
+## 什么是纯函数 (Pure Function)？什么是高阶函数 (Higher-Order Function)？
+- 纯函数：只依赖于输入参数，不产生副作用
+- 高阶函数：接受一个或多个函数作为参数 或 返回一个函数。
+
+## 实现一个通用的 call, apply, bind 方法。
+
 ## null 和 undefined 有什么不同？
 - undefined: 表示一个变量被声明了，但是没有被赋值。
 - null: 表示一个变量有值，这个值就是“空值”或“无对象”。
@@ -73,9 +91,9 @@ Promise.resolve().then(()=>{
 // cc1 bb3 bb2 c1 b3 b2 aa3 aa2 bb1 a3 a2 b1 aa1 a1 
 ```
 
-同步代码优先执行。
-微任务在本次事件循环结束前（下一个宏任务开始前）全部执行完毕。
-宏任务每次只执行一个，然后又会去检查并清空微任务队列。
+1. 同步代码优先执行。
+2. 微任务在本次事件循环结束前（下一个宏任务开始前）全部执行完毕。
+3. 宏任务每次只执行一个，然后又会去检查并清空微任务队列。
 
 ##  如何获取 DOM 元素？
 - document.getElementById('myId');
@@ -96,7 +114,7 @@ Promise.resolve().then(()=>{
 | 链式调用 | 不能链式调用，因为它返回 `undefined`。 | 可以链式调用。 | 可以链式调用。 |
 
 
-# 二、 中级 (Intermediate)
+# 二、 进阶
 ## 闭包（Closure）的概念
 - 即函数可以访问并“记住”其外部作用域中的变量
 ```js
@@ -114,9 +132,31 @@ for (var i = 0; i < 3; i++) {
 ```
 
 ## 解释 `__proto__` 和 `prototype` 的关系。如何实现一个类的继承？
-- `prototype` (原型对象):函数的一个属性
-- `__proto__`(隐式原型):对象（包括实例对象、数组、函数本身等）的一个内部属性
+- `prototype` (原型对象): 函数的一个属性
+- `__proto__`(隐式原型): 对象（包括实例对象、数组、函数本身等）的一个内部属性
 - 实例的 `__proto__` 指向其构造函数的 `prototype`。
+
+## 使用 new 操作符调用一个函数时，JS 引擎内部会执行些什么？
+1. 创建一个全新的空对象 {}。
+2. 将新创建的对象的内部 `[[Prototype]]` 链接到构造函数的 prototype 属性上。
+3. 将构造函数内部的 this 关键字绑定到这个新创建的对象上。
+4. 返回这个新创建的对象。
+
+```js
+function myNew(constructor, ...args) {
+    // 步骤1: 创建一个新对象
+    const newObj = {};
+
+    // 步骤2: 设置新对象的原型链。将新对象的 __proto__ 指向构造函数的 prototype
+    newObj.__proto__ = constructor.prototype;
+
+    // 步骤3: 将构造函数的 this 指向新对象，并执行构造函数。使用 call 方法可以改变函数内部的 this 指向
+    const result = constructor.call(newObj, ...args);
+
+    // 步骤4: 判断构造函数的返回值。如果构造函数返回了一个对象，则返回该对象；否则返回我们创建的新对象
+    return typeof result === 'object' && result !== null ? result : newObj;
+}
+```
 
 ## 比较 callback, Promise, async/await 的优缺点
 - callback 回调地狱 错误处理困难 流程的控制权交给了第三方
@@ -153,11 +193,88 @@ const instance2 = new Singleton("实例B");
 
 console.log(instance1 === instance2); // true
 console.log(instance1.name);         // "实例A" (因为第二次调用时直接返回了第一次的实例)
+
+// ES6
+class DatabaseConnection {
+  constructor(connectionString) {
+    // 如果实例已存在，直接返回它
+    if (DatabaseConnection.instance) {
+      return DatabaseConnection.instance;
+    }
+
+    // 初始化连接
+    this.connectionString = connectionString;
+    this.connect();
+
+    // 保存实例引用
+    DatabaseConnection.instance = this;
+
+    // 返回实例（对于首次调用是必要的）
+    return this;
+  }
+}
 ```
 
 ## 发布-订阅模式。
+```js
+class EventHub {
+  constructor() {
+    // 用一个对象来存储所有的事件及对应的回调函数列表
+    this.events = {};
+  }
+
+  /**
+   * 订阅事件
+   * @param {string} eventName - 事件名称
+   * @param {Function} callback - 触发事件时要执行的回调函数
+   */
+  on(eventName, callback) {
+    if (!this.events[eventName]) {
+      // 如果该事件尚无订阅者，初始化一个空数组
+      this.events[eventName] = [];
+    }
+    // 将回调函数添加到该事件的列表中
+    this.events[eventName].push(callback);
+  }
+
+  /**
+   * 发布事件
+   * @param {string} eventName - 事件名称
+   * @param {...any} args - 传递给回调函数的参数
+   */
+  emit(eventName, ...args) {
+    // 检查是否有订阅此事件的回调函数
+    if (this.events[eventName]) {
+      // 遍历并执行所有回调函数
+      this.events[eventName].forEach(callback => {
+        callback(...args);
+      });
+    }
+  }
+
+  /**
+   * 取消订阅
+   * @param {string} eventName - 事件名称
+   * @param {Function} callback - 要取消订阅的具体回调函数
+   */
+  off(eventName, callback) {
+    if (this.events[eventName]) {
+      // 过滤掉指定的回调函数，生成新的数组
+      this.events[eventName] = this.events[eventName].filter(
+        cb => cb !== callback
+      );
+    }
+  }
+}
+```
 
 ## 实现一个深拷贝函数，需要考虑哪些情况（如循环引用）？
+- 引用数据类型
+- 循环引用问题
+- 不可枚举属性以及访问器属性
+- 特殊对象类型的支持
+- 原型链的处理
+- Map 和 Set 数据结构的处理
 
 # 三、 高级 (Senior)
 1. 性能优化:
