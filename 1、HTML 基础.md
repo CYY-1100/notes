@@ -7,7 +7,7 @@
 - 好处包括：提升代码可读性和可维护性；增强SEO，利于爬虫解析;
 
 ## HTML5新增了哪些语义化标签？
-- <header>, <footer>, <nav>, <article>, <section>, <aside>, <main>, <figure>, <figcaption>
+- `<header>`, `<footer>`, `<nav>`, `<article>`, `<section>`, `<aside>`, `<main>`, `<figure>`, `<figcaption>`
 - 利于 SEO，利于屏幕阅读器（无障碍），代码可读性更强。
 
 ## 行内元素、块级元素和行内块元素的区别？

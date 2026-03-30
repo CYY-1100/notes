@@ -63,11 +63,11 @@
 - opacity: 0。元素完全透明，但仍占据空间且存在于文档流中。
 
 ## link 和 @import 的区别？
-- 归属不同。<link>: 是 HTML (XHTML) 标签；@import: 是 CSS 规则；
-- 加载行为与性能。<link>: 并行加载（可以同时下载）。@import: 串行加载；
-- <link>: 优先级通常高于 @import。
-- <link>: 功能丰富，还可以定义图标 (rel="icon")、RSS 订阅、预加载资源 (rel="preload")、DNS 预解析 (rel="dns-prefetch") 等。@import只能用于导入样式表。
-- <link>: 兼容性极好
+- 归属不同。`<link>`: 是 HTML (XHTML) 标签；@import: 是 CSS 规则；
+- 加载行为与性能。`<link>`: 并行加载（可以同时下载）。@import: 串行加载；
+- `<link>`: 优先级通常高于 @import。
+- `<link>`: 功能丰富，还可以定义图标 (rel="icon")、RSS 订阅、预加载资源 (rel="preload")、DNS 预解析 (rel="dns-prefetch") 等。@import只能用于导入样式表。
+- `<link>`: 兼容性极好
 - @import在移动网络或慢速网络下的性能表现糟糕。
 
 # 布局、定位与实战
@@ -93,16 +93,16 @@ flex-basis: 0%;
 
 # 架构、性能、新特性与原理
 ## CSS 性能优化有哪些手段？
-减少选择器层级（避免 div div div p）。
-避免通配符 * 的全局高频计算。
-利用 GPU 加速（transform, opacity 触发合成层，避免触发布局重排）。
-提取公共样式，减少文件大小。
-使用 will-change 需谨慎。
+- 减少选择器层级
+- 避免通配符 * 的全局高频计算。
+- 利用 GPU 加速（transform, opacity 触发合成层，避免触发布局重排）。
+- 提取公共样式，减少文件大小。
+- 使用 will-change 需谨慎。
 
 ## 讲讲 CSS 变量的作用域及与 JS 的交互？
-考点：:root 全局作用域 vs 局部作用域、级联特性（可被覆盖）。
-JS 交互：getComputedStyle().getPropertyValue() 获取，element.style.setProperty() 修改。
-场景：动态主题切换（深色模式）。
+- 考点：:root 全局作用域 vs 局部作用域、级联特性（可被覆盖）。
+- JS 交互：getComputedStyle().getPropertyValue() 获取，element.style.setProperty() 修改。
+- 场景：主题颜色切换。
 
 ## 最新 CSS 特性
 
@@ -111,8 +111,8 @@ JS 交互：getComputedStyle().getPropertyValue() 获取，element.style.setProp
 ## CSS 模块化与样式隔离方案有哪些？
 
 ## 手写代码题示例：
-画一个三角形。
-实现一个圣杯布局或双飞翼布局。
-实现一个自适应的正方形。
-用纯 CSS 实现一个 Loading 动画。
-实现文本超出省略号（单行/多行）。
+- 画一个三角形。
+- 实现一个圣杯布局或双飞翼布局。
+- 实现一个自适应的正方形。
+- 用纯 CSS 实现一个 Loading 动画。
+- 实现文本超出省略号（单行/多行）。
