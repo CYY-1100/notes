@@ -4,8 +4,6 @@
 - instanceof用于判断一个复杂数据类型的实例, 返回一个布尔值
 - 对于更精确的对象类型判断，可以使用 Object.prototype.toString.call() 方法。
 
-## == 和 === 的区别是什么？
-
 ## [] == false 的结果是什么？"2" > 1 的结果是什么？
 - 0 == 0， 2>1
 
@@ -16,15 +14,29 @@
 - 更安全的编码实践
 - 捕获常见错误
 
-## 什么是纯函数 (Pure Function)？什么是高阶函数 (Higher-Order Function)？
+## 什么是纯函数？什么是高阶函数？
 - 纯函数：只依赖于输入参数，不产生副作用
 - 高阶函数：接受一个或多个函数作为参数 或 返回一个函数。
+
+## call, apply, bind 方法。
+- call：调用一个函数，指定该函数内部 this 的值，可选参数需要逐个列出。经典应用场景：方法借用
+- apply：与 call 相似，参数是一个类数组。经典应用场景：求数组最大值（ES5）。
+- bind：不会立即执行函数，返回一个新的函数。经典应用场景：在事件处理或定时器中固定 this；函数柯里化
 
 ## 实现一个通用的 call, apply, bind 方法。
 
 ## null 和 undefined 有什么不同？
 - undefined: 表示一个变量被声明了，但是没有被赋值。
 - null: 表示一个变量有值，这个值就是“空值”或“无对象”。
+
+## `prototype`、`__proto__` 和 `constructor`是什么？有什么作用？
+- `prototype`：显式原型，函数天生就拥有的一个属性，称之为“原型对象”。作用：实例可以共享属性和方法。
+- `__proto__`：隐式原型，所有对象（除了 null）都拥有的一个内部属性。
+  - 作用：将实例对象与其构造函数的原型连接起来。`实例对象.__proto__` === `constructor.prototype`
+- `constructor`：`prototype`默认自带的一个属性。
+  - 作用：指回创建该原型对象的构造函数本身，形成一个闭环。`原型对象.constructor === 构造函数`
+
+## 什么是原型链？
 
 ## var, let, const 的区别
 | 特性 | var | let | const |
@@ -115,8 +127,9 @@ Promise.resolve().then(()=>{
 
 
 # 二、 进阶
-## 闭包（Closure）的概念
+## 闭包（Closure）的概念，应用场景
 - 即函数可以访问并“记住”其外部作用域中的变量
+- 应用场景：函数柯里化，实现数据持久化和状态管理，创建函数工厂，模块模式
 ```js
 for (var i = 0; i < 3; i++) {
   setTimeout(() => console.log(i), 1); // 打印 3, 3, 3
@@ -130,6 +143,7 @@ for (var i = 0; i < 3; i++) {
 }
 // 2.使用let
 ```
+
 
 ## 解释 `__proto__` 和 `prototype` 的关系。如何实现一个类的继承？
 - `prototype` (原型对象): 函数的一个属性
@@ -193,41 +207,17 @@ const instance2 = new Singleton("实例B");
 
 console.log(instance1 === instance2); // true
 console.log(instance1.name);         // "实例A" (因为第二次调用时直接返回了第一次的实例)
-
-// ES6
-class DatabaseConnection {
-  constructor(connectionString) {
-    // 如果实例已存在，直接返回它
-    if (DatabaseConnection.instance) {
-      return DatabaseConnection.instance;
-    }
-
-    // 初始化连接
-    this.connectionString = connectionString;
-    this.connect();
-
-    // 保存实例引用
-    DatabaseConnection.instance = this;
-
-    // 返回实例（对于首次调用是必要的）
-    return this;
-  }
-}
 ```
 
 ## 发布-订阅模式。
 ```js
 class EventHub {
   constructor() {
-    // 用一个对象来存储所有的事件及对应的回调函数列表
+    // 存储所有的事件及对应的回调函数列表
     this.events = {};
   }
 
-  /**
-   * 订阅事件
-   * @param {string} eventName - 事件名称
-   * @param {Function} callback - 触发事件时要执行的回调函数
-   */
+  // 订阅事件
   on(eventName, callback) {
     if (!this.events[eventName]) {
       // 如果该事件尚无订阅者，初始化一个空数组
@@ -237,11 +227,7 @@ class EventHub {
     this.events[eventName].push(callback);
   }
 
-  /**
-   * 发布事件
-   * @param {string} eventName - 事件名称
-   * @param {...any} args - 传递给回调函数的参数
-   */
+  // 发布事件
   emit(eventName, ...args) {
     // 检查是否有订阅此事件的回调函数
     if (this.events[eventName]) {
@@ -252,11 +238,7 @@ class EventHub {
     }
   }
 
-  /**
-   * 取消订阅
-   * @param {string} eventName - 事件名称
-   * @param {Function} callback - 要取消订阅的具体回调函数
-   */
+  // 取消订阅
   off(eventName, callback) {
     if (this.events[eventName]) {
       // 过滤掉指定的回调函数，生成新的数组
@@ -266,6 +248,54 @@ class EventHub {
     }
   }
 }
+
+// ES5
+// 构造函数
+function EventHub() {
+  // 用于存储所有事件及其对应的回调函数列表
+  // 结构示例: { 'eventA': [func1, func2], 'eventB': [func3] }
+  this.events = {};
+}
+
+// 订阅方法
+EventHub.prototype.on = function(event, callback) {
+  if (!this.events[event]) {
+    // 如果该事件名下还没有任何回调，则初始化一个空数组
+    this.events[event] = [];
+  }
+  // 将新的回调函数添加到对应事件的回调列表末尾
+  this.events[event].push(callback);
+};
+
+// 发布方法
+EventHub.prototype.emit = function(event, data) {
+  // 检查是否有针对该事件的回调函数列表
+  if (this.events[event]) {
+    // 遍历列表中的所有回调函数，并依次执行它们
+    // 将传入的数据 `data` 作为参数传递给每个回调函数
+    this.events[event].forEach(function(callback) {
+      callback(data);
+    });
+  }
+};
+
+// 取消订阅
+EventHub.prototype.off = function(event, callback) {
+  // 检查该事件是否存在
+  if (!this.events[event]) return;
+
+  if (callback) {
+    // 如果提供了具体的回调函数，则从列表中移除它
+    this.events[event] = this.events[event].filter(function(fn) {
+      // filter会返回一个新数组，只包含使回调函数返回true的元素
+      // 因此，只要fn不等于我们要移除的callback，它就会被保留在新数组中
+      return fn !== callback;
+    });
+  } else {
+    // 如果没有提供回调函数，则移除该事件下的所有回调
+    delete this.events[event];
+  }
+};
 ```
 
 ## 实现一个深拷贝函数，需要考虑哪些情况（如循环引用）？
@@ -278,21 +308,35 @@ class EventHub {
 
 # 三、 高级 (Senior)
 1. 性能优化:
-题目示例: 如何减少 JavaScript 的内存泄漏？如何优化长列表渲染？解释防抖（Debounce）和节流（Throttle）的原理及其实现。
-考察点: 内存管理、事件处理优化、渲染性能等。
+## 如何减少 JavaScript 的内存泄漏？
+- 始终使用 let, const 或 var 来声明变量。
+- 确保在闭包不需要时，解除引用。
+- 事件监听器不需要时，移除事件监听器。
+- 定时器不需要时，清理定时器。
+- 移除 DOM 元素后，手动将你的 JavaScript 引用设置为 null。
+- 适时清理 Map 和 Set，移除不再需要的项。
 
-2. V8 引擎原理:
-题目示例: 解释 V8 引擎的垃圾回收机制。为什么说 Map 的性能比普通对象作为 Hash 表更好？
-考察点: 对 JS 运行环境的底层理解。
+## 如何优化长列表渲染？
+- 虚拟滚动
+- 分页
+- 懒加载
+
+## 解释防抖（Debounce）和节流（Throttle）的原理及其实现。
+
+## 解释 V8 引擎的垃圾回收机制。
+
+## 为什么说 Map 的性能比普通对象作为 Hash 表更好？
+- 普通 JavaScript 对象（{}）最初并非为纯粹的哈希表而设计，它承载了原型继承等语义。
+- 而 Map 是 ES6 专门为高效的键值对集合操作而引入的数据结构。
 
 3. 模块化:
-题目示例: 比较 CommonJS 和 ESModule 的区别。它们的加载机制有何不同（动态 vs 静态）？
-考察点: 代码组织和依赖管理。
+## 比较 CommonJS 和 ESModule 的区别。它们的加载机制有何不同（动态 vs 静态）？
 
 4. 编程范式与复杂场景实现:
 题目示例: 用函数式编程的思想实现一个数据处理管道。设计并实现一个前端状态管理方案（如简化版的 Redux）。
 考察点: 代码抽象能力、架构设计能力。
 
 5. 安全性:
-题目示例: 什么是 XSS 攻击？如何防范？什么是同源策略和 CORS？
-考察点: 安全意识和防护措施。
+## 什么是 XSS 攻击？如何防范？
+
+## 什么是同源策略和 CORS？
