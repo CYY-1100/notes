@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <title>原生JS虚拟滚动示例</title>
@@ -10,7 +11,8 @@
             height: 400px;
             border: 1px solid #ccc;
             overflow-y: auto;
-            position: relative; /* 为内部绝对定位元素提供参考 */
+            /* 为内部绝对定位元素提供参考 */
+            position: relative;
         }
 
         /* 2. 占位元素：撑开滚动条 */
@@ -34,7 +36,8 @@
 
         /* 4. 单个列表项 */
         .virtual-list__item {
-            height: 50px; /* 固定高度 */
+            /* 固定高度 */
+            height: 50px;
             line-height: 50px;
             padding: 0 10px;
             box-sizing: border-box;
@@ -43,81 +46,83 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="virtual-list" id="virtualList">
-    <div class="virtual-list__placeholder" id="placeholder"></div>
-    <div class="virtual-list__items" id="itemsContainer"></div>
-</div>
+    <div class="virtual-list" id="virtualList">
+        <div class="virtual-list__placeholder" id="placeholder"></div>
+        <div class="virtual-list__items" id="itemsContainer"></div>
+    </div>
 
-<script>
-    // --- 配置和数据 ---
-    const TOTAL_ITEMS = 1000000; // 总数据量
-    const ITEM_HEIGHT = 50;    // 单个列表项的高度
-    const BUFFER_SIZE = 5;     // 缓冲区大小，上下各渲染5个，防止快速滚动时出现空白
+    <script>
+        // --- 配置和数据 ---
+        const TOTAL_ITEMS = 1000000; // 总数据量
+        const ITEM_HEIGHT = 50;    // 单个列表项的高度
+        const BUFFER_SIZE = 5;     // 缓冲区大小，上下各渲染5个，防止快速滚动时出现空白
 
-    // 生成模拟数据
-    const data = Array.from({ length: TOTAL_ITEMS }, (_, i) => `这是第 ${i + 1} 条数据`);
+        // 生成模拟数据
+        const data = Array.from({ length: TOTAL_ITEMS }, (_, i) => `这是第 ${i + 1} 条数据`);
 
-    // --- DOM 元素 ---
-    const listContainer = document.getElementById('virtualList');
-    const placeholder = document.getElementById('placeholder');
-    const itemsContainer = document.getElementById('itemsContainer');
+        // --- DOM 元素 ---
+        const listContainer = document.getElementById('virtualList');
+        const placeholder = document.getElementById('placeholder');
+        const itemsContainer = document.getElementById('itemsContainer');
 
-    // --- 核心逻辑 ---
+        // --- 核心逻辑 ---
 
-    // 1. 初始化：设置占位元素高度
-    placeholder.style.height = `${TOTAL_ITEMS * ITEM_HEIGHT}px`;
+        // 1. 初始化：设置占位元素高度
+        placeholder.style.height = `${TOTAL_ITEMS * ITEM_HEIGHT}px`;
 
-    // 2. 渲染函数
-    function render() {
-        const scrollTop = listContainer.scrollTop;
-        const containerHeight = listContainer.clientHeight;
+        // 2. 渲染函数
+        function render() {
+            const scrollTop = listContainer.scrollTop;
+            const containerHeight = listContainer.clientHeight;
 
-        // 计算可视区域的起始和结束索引
-        const startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
-        const endIndex = Math.min(
-            TOTAL_ITEMS - 1,
-            Math.ceil((scrollTop + containerHeight) / ITEM_HEIGHT)
-        );
+            // 计算可视区域的起始和结束索引
+            const startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
+            const endIndex = Math.min(
+                TOTAL_ITEMS - 1,
+                Math.ceil((scrollTop + containerHeight) / ITEM_HEIGHT)
+            );
 
-        // 添加缓冲区，防止快速滚动时出现空白
-        const renderStartIndex = Math.max(0, startIndex - BUFFER_SIZE);
-        const renderEndIndex = Math.min(TOTAL_ITEMS - 1, endIndex + BUFFER_SIZE);
+            // 添加缓冲区，防止快速滚动时出现空白
+            const renderStartIndex = Math.max(0, startIndex - BUFFER_SIZE);
+            const renderEndIndex = Math.min(TOTAL_ITEMS - 1, endIndex + BUFFER_SIZE);
 
-        // 计算偏移量，让渲染的列表项出现在正确的位置
-        const offsetY = renderStartIndex * ITEM_HEIGHT;
-        itemsContainer.style.transform = `translateY(${offsetY}px)`;
+            // 计算偏移量，让渲染的列表项出现在正确的位置
+            const offsetY = renderStartIndex * ITEM_HEIGHT;
+            itemsContainer.style.transform = `translateY(${offsetY}px)`;
 
-        // 清空并重新渲染可见项
-        itemsContainer.innerHTML = '';
-        const fragment = document.createDocumentFragment(); // 使用文档片段优化DOM操作
+            // 清空并重新渲染可见项
+            itemsContainer.innerHTML = '';
+            const fragment = document.createDocumentFragment(); // 使用文档片段优化DOM操作
 
-        for (let i = renderStartIndex; i <= renderEndIndex; i++) {
-            const item = document.createElement('div');
-            item.className = 'virtual-list__item';
-            item.textContent = data[i];
-            fragment.appendChild(item);
+            for (let i = renderStartIndex; i <= renderEndIndex; i++) {
+                const item = document.createElement('div');
+                item.className = 'virtual-list__item';
+                item.textContent = data[i];
+                fragment.appendChild(item);
+            }
+            itemsContainer.appendChild(fragment);
         }
-        itemsContainer.appendChild(fragment);
-    }
 
-    // 3. 监听滚动事件
-    // 使用 requestAnimationFrame 进行节流，保证滚动流畅度
-    let isRendering = false;
-    listContainer.addEventListener('scroll', () => {
-        if (!isRendering) {
-            isRendering = true;
-            requestAnimationFrame(() => {
-                render();
-                isRendering = false;
-            });
-        }
-    });
+        // 3. 监听滚动事件
+        // 使用 requestAnimationFrame 进行节流，保证滚动流畅度
+        let isRendering = false;
+        listContainer.addEventListener('scroll', () => {
+            if (!isRendering) {
+                isRendering = true;
+                requestAnimationFrame(() => {
+                    render();
+                    isRendering = false;
+                });
+            }
+        });
 
-    // 4. 初始渲染
-    render();
+        // 4. 初始渲染
+        render();
 
-</script>
+    </script>
 </body>
+
 </html>
