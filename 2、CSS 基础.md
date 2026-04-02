@@ -1,118 +1,255 @@
-# 基础语法与概念
-## 选择器优先级
-- `!important`的优先级最大。
-- `内联`样式表的`权重值`为1000。
-- `id`选择器的权重值为100。
-- `类 .class`选择器的权值为10。
-- `元素 p`选择器的优先级为1。
-- `通配符 *`选择器的优先级为0。
-> 当`权值相等`时，`后定义优于先定义`的样式表。
-> 在同一组属性设置中表有`!important`规则的优先级最大。
+# CSS 基础
 
-## `!important` 的作用及其副作用。
-- 难以维护和调试
-- 与CSS的设计原则相悖
-- 阻碍样式的可扩展性。其他地方覆盖这个样式，也必须使用 !important
-
-## 基础选择器
-- 元素 p
-- 类 .class
-- ID #id
-- 通用：*
-
-## 组合选择器
-- 后代 .class p
-- 子 .class > p
-- 相邻 h2 + p
-- 兄弟 h2 ~ p
-
-## 属性选择器
-- [title]
-
-## 伪类和伪元素选择器
-- ：hover
-- ：：before
-
-## 标准盒模型 (content-box) 与 IE 盒模型 (border-box) 的区别是什么？
-- 标准盒模型：内容 + padding + border + margin
-- IE盒模型：width(内容 + padding + border) + margin
-
-## 如何通过 box-sizing 属性切换？
-- box-sizing: content-box;
-- box-sizing: border-box;(IE 盒模型)
-
-## 单位换算
-- px: 像素。
-- pt：点。全称为 Point。
-- pc: 派卡。1pc = 12pt。
-- cm: 厘米。1cm = 37.8px。
-- mm: 毫米。1mm = 3.78px。
-- in: 英寸。1in = 96px。
-
-## em 和 rem 在字体大小计算上的差异。
-- em: 相对于`父元素的字体`大小。
-- rem: 相对于`根元素的字体`大小。字体和间距优先使用 rem。移动端适配常用 rem 或 vw；字体大小常用 rem 以便缩放。
-
-## Grid 与 Flexbox 的最佳适用场景区别。
-- 维度。Flexbox 擅长一维布局， Grid 擅长二维布局
-- 适用场景对比。线性内容流或动态组件时，Flexbox 是首选。
-
-## 如何隐藏一个元素？
-- display: none。从文档流中移除，不占据任何空间。触发重排。子元素也会隐藏。
-- visibility: hidden。仍占据原有空间。触发重绘，不触发重排。
-- opacity: 0。元素完全透明，但仍占据空间且存在于文档流中。
-
-## link 和 @import 的区别？
-- 归属不同。`<link>`: 是 HTML (XHTML) 标签；@import: 是 CSS 规则；
-- 加载行为与性能。`<link>`: 并行加载（可以同时下载）。@import: 串行加载；
-- `<link>`: 优先级通常高于 @import。
-- `<link>`: 功能丰富，还可以定义图标 (rel="icon")、RSS 订阅、预加载资源 (rel="preload")、DNS 预解析 (rel="dns-prefetch") 等。@import只能用于导入样式表。
-- `<link>`: 兼容性极好
-- @import在移动网络或慢速网络下的性能表现糟糕。
-
-# 布局、定位与实战
-## 元素水平垂直居中
-- Flex布局。display: flex;justify-content: center; align-items: center; 
-- Grid布局。display: grid; place-items: center;
-- position + transform布局。适用旧浏览器
-
-## 谈谈对 BFC (块级格式化上下文) 的理解及应用场景？
-
-## Flex 布局常用属性有哪些？flex: 1 代表什么？
-- flex-direction, justify-content, align-items, flex-wrap
+## 初级
+### 选择器
 ```css
-flex-grow: 1;
-flex-shrink: 1;
-flex-basis: 0%;
+/* 基础选择器 */
+p { }           /* 元素选择器 */
+.class { }      /* 类选择器 */
+#id { }         /* ID选择器 */
+* { }           /* 通配符选择器 */
+
+/* 组合选择器 */
+.class p { }     /* 后代选择器 */
+.class > p { }   /* 子选择器 */
+h2 + p { }       /* 相邻选择器 */
+h2 ~ p { }       /* 兄弟选择器 */
+
+/* 属性选择器 */
+[title] { }              /* 有属性 */
+[title="hello"] { }      /* 完全匹配 */
+[title^="hello"] { }     /* 开头 */
+[title$="hello"] { }     /* 结尾 */
+[title*="hello"] { }     /* 包含 */
+
+/* 伪类选择器 */
+:hover { }              /* 悬停 */
+:focus { }              /* 聚焦 */
+:first-child { }        /* 第一个子元素 */
+:nth-child(n) { }       /* 第 n 个 */
+:not(selector) { }      /* 否定 */
+
+/* 伪元素 */
+::before { content: ""; }   /* 前插入 */
+::after { content: ""; }    /* 后插入 */
 ```
 
-## 浮动（Float）的原理及清除浮动的方法？
+### 优先级
+| 选择器 | 权重 |
+|------------|------|
+| !important | 最高 |
+| 内联样式   | 1000 |
+| #id       | 100 |
+| .class    | 10 |
+| 元素       | 1 |
+| *         | 0 |
 
-## position 的值有哪些？fixed 和 absolute 的定位参照物是什么？
+### 盒模型
+| 模型 | width 包含 |
+|------|------------|
+| content-box（标准） | 仅内容 |
+| border-box（IE） | 内容 + padding + border |
 
+### 隐藏元素
+| 属性 | 空间 | 渲染 |
+|------|------|------|
+| display: none | 不占据 | 触发重排 |
+| visibility: hidden | 占据 | 仅重绘 |
+| opacity: 0 | 占据 | 不触发 |
 
-# 架构、性能、新特性与原理
-## CSS 性能优化有哪些手段？
-- 减少选择器层级
-- 避免通配符 * 的全局高频计算。
-- 利用 GPU 加速（transform, opacity 触发合成层，避免触发布局重排）。
-- 提取公共样式，减少文件大小。
-- 使用 will-change 需谨慎。
+### 单位
+| 单位 | 类型 | 说明 |
+|------|------|------|
+| px | 绝对 | 像素 |
+| em | 相对 | 相对于父元素字体大小 |
+| rem | 相对 | 相对于根元素字体大小 |
+| vw/vh | 相对 | 视口宽/高的 1% |
+| vmin/vmax | 相对 | 视口较小/较大边的 1% |
+| % | 相对 | 相对于父元素 |
+| ch/ex | 相对 | 相对于字体尺寸 |
+| pt/pc/in | 绝对 | 打印单位（1in = 96px） |
 
-## 讲讲 CSS 变量的作用域及与 JS 的交互？
-- 考点：:root 全局作用域 vs 局部作用域、级联特性（可被覆盖）。
-- JS 交互：getComputedStyle().getPropertyValue() 获取，element.style.setProperty() 修改。
-- 场景：主题颜色切换。
+### link vs @import
+- link：HTML 标签，并行加载
+- @import：串行加载，会阻塞渲染
 
-## 最新 CSS 特性
+## 中级
+### Flex 布局
+```css
+/* 容器 */
+display: flex;
+flex-direction: row | column;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+gap: 10px;
 
-## 键渲染路径（CRP）中 CSS 的影响？什么是 FOUC？
+/* 项目 */
+flex-grow: 1;      /* 放大，0 不放大 */
+flex-shrink: 1;    /* 缩小，0 不缩小 */
+flex-basis: auto;  /* 初始大小 */
+flex: 1;           /* flex: 1 1 auto */
+```
 
-## CSS 模块化与样式隔离方案有哪些？
+### Grid 布局
+```css
+display: grid;
+grid-template-columns: 1fr 2fr 1fr;
+grid-template-rows: 100px auto;
+gap: 10px;
+grid-column: span 2;  /* 跨列 */
+```
 
-## 手写代码题示例：
-- 画一个三角形。
-- 实现一个圣杯布局或双飞翼布局。
-- 实现一个自适应的正方形。
-- 用纯 CSS 实现一个 Loading 动画。
-- 实现文本超出省略号（单行/多行）。
+### 水平垂直居中
+```css
+/* Flex */
+display: flex;
+justify-content: center;
+align-items: center;
+
+/* Grid */
+display: grid;
+place-items: center;
+
+/* absolute */
+position: absolute;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+```
+
+### position 定位
+| 值 | 参照 | 说明 |
+|----|------|------|
+| static | - | 默认 |
+| relative | 自身 | 占据空间 |
+| absolute | 最近定位祖先 | 脱离文档流 |
+| fixed | 视口 | 脱离文档流 |
+| sticky | 视口/父元素 | 阈值前固定 |
+
+### BFC（块级格式化上下文）
+
+#### 触发条件
+overflow, float, position: absolute/fixed, display: flex/inline-flex/inline-block/grid
+
+#### 特性
+- 内部垂直排列
+- 外边距合并
+- 清除浮动
+- 不被浮动覆盖
+
+### 浮动
+元素脱离文档流，向左/右移动。
+
+#### 清除浮动
+```css
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+```
+
+### CSS 变量
+```css
+:root { --color: red; }
+.class { --size: 10px; }
+color: var(--color);
+```
+```js
+el.style.setProperty('--color', 'blue');
+getComputedStyle(el).getPropertyValue('--color');
+```
+
+### 响应式
+```css
+@media (max-width: 768px) { }   /* 手机 */
+@media (min-width: 769px) { }   /* 平板 */
+```
+
+## 高级
+### 层叠上下文
+HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个层级的容器。
+
+#### 触发条件
+- 根元素
+- position + z-index
+- opacity < 1
+- transform/filter/will-change
+
+#### 层叠级别（从低到高）
+1. 背景/边框
+2. z-index < 0
+3. 块级盒子
+4. 浮动盒子
+5. inline
+6. z-index: 0/auto
+7. z-index > 0
+
+### 性能优化
+- 选择器层级 < 3
+- 避免通配符 *
+- transform/opacity GPU 加速
+- will-change 提升合成层（谨慎）
+- 提取公共样式
+
+### 关键渲染路径
+
+#### CSS 阻塞渲染
+- 必须等 CSS 加载完成
+- 避免 @import
+
+#### FOUC（无样式内容闪烁）
+- 原因：CSS 加载晚于 HTML
+- 解决：CSS 放在 `<head>` 中
+
+### CSS 模块化
+| 方案 | 说明 |
+|------|------|
+| BEM | block__element--modifier |
+| CSS Modules | 编译时唯一类名 |
+| styled-components | JS 中写 CSS |
+| Tailwind CSS | 原子化 CSS |
+
+### 新特性
+```css
+/* 容器查询 */
+@container (min-width: 300px) { }
+
+/* :has() 父选择器 */
+button:has(.icon) { }
+
+/* clamp() */
+font-size: clamp(14px, 2vw, 24px);
+
+/* 嵌套 */
+.parent {
+  &:hover { }
+}
+```
+
+### 动画
+```css
+/* transition */
+transition: all 0.3s ease;
+
+/* @keyframes */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+animation: spin 1s infinite;
+```
+
+### CSS 函数
+| 函数 | 说明 | 示例 |
+|------|------|------|
+| calc() | 四则运算 | width: calc(100% - 20px) |
+| min() | 取最小值 | width: min(50%, 300px) |
+| max() | 取最大值 | width: max(50%, 300px) |
+| clamp() | 范围限制 | font-size: clamp(14px, 2vw, 24px) |
+| var() | CSS 变量 | color: var(--primary) |
+| rgb() / rgba() | 颜色 | color: rgb(255, 0, 0) |
+| hsl() / hsla() | 颜色 | color: hsl(0, 100%, 50%) |
+| url() | 图片路径 | background: url('img.png') |
+| attr() | 属性值 | content: attr(data-title) |
+| color() | 色彩空间 | color: color(display-p3 1 0 0) |
