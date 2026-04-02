@@ -271,3 +271,83 @@ window.addEventListener('popstate', (e) => {
 }
 </script>
 ```
+
+## `<base>` 标签有什么用？
+- 为页面所有相对 URL 设置基准 URL
+- 只能有一个，且必须放在 `<head>` 中
+```html
+<head>
+  <base href="https://example.com/images/" target="_blank">
+</head>
+<body>
+  <a href="logo.png">logo</a> <!-- 实际指向 https://example.com/images/logo.png -->
+</body>
+```
+
+## HTML5 全局属性有哪些？
+- `contenteditable`：元素内容可编辑（true/false）
+- `hidden`：隐藏元素（等同于 `display: none`）
+- `draggable`：元素可拖拽（true/false/auto）
+- `spellcheck`：是否启用拼写检查
+- `tabindex`：Tab 键导航顺序（正数为顺序，-1 跳过）
+- `translate`：是否翻译元素内容（yes/no）
+```html
+<div contenteditable="true" tabindex="1" draggable="true">可编辑可拖拽</div>
+<button hidden>隐藏按钮</button>
+```
+
+## `<video>` 和 `<audio>` 有哪些常用属性？
+- 通用属性：`controls`（控制条）、`autoplay`、`loop`、`muted`、`preload`
+- video 专属：`poster`（封面图）、`width`、`height`
+- audio 专属：无特殊属性
+```html
+<video src="movie.mp4" controls autoplay muted poster="poster.jpg" preload="auto">
+  您的浏览器不支持 video 标签
+</video>
+
+<audio src="music.mp3" controls loop preload="metadata">
+  您的浏览器不支持 audio 标签
+</audio>
+```
+
+## `<noscript>` 标签有什么用？
+- JS 被禁用或不支持时显示的备选内容
+- 可放在 `<head>` 或 `<body>` 中
+```html
+<noscript>
+  <p>您的浏览器已禁用 JavaScript，请开启以获得最佳体验。</p>
+</noscript>
+```
+
+## 什么是事件委托？有什么好处？
+- 原理：把事件监听器绑定到父元素，利用冒泡机制处理子元素事件
+- 好处：减少事件监听器数量；动态添加的子元素自动获得事件处理
+```js
+// 不使用委托：每个 li 都有监听器
+document.querySelectorAll('li').forEach(li => {
+  li.addEventListener('click', handleClick);
+});
+
+// 使用委托：只绑定一个监听器
+ul.addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') {
+    handleClick(e.target);
+  }
+});
+```
+
+## 浏览器解析 HTML 的过程是什么？
+- 1. 字节 → 字符：字节流解码为字符
+- 2. 字符 → 令牌：解析为 Token（开始标签、结束标签、文本等）
+- 3. 令牌 → 节点：令牌转换为 Node 对象
+- 4. 节点 → DOM 树：Node 按嵌套关系构建成树形结构
+- 同时：CSS 解析为 CSSOM，与 DOM 合并生成渲染树
+- 特点：解析是增量过程，遇到 `<script>` 会阻塞（除非 defer/async）
+
+## 什么是可替换元素？有哪些？
+- 定义：元素内容通常由外部资源替换（src、href 等属性）
+- 常见：`<img>`、`<video>`、`<audio>`、`<iframe>`、`<canvas>`、`<svg>`、`<input>`、`<object>`
+- 特点：
+    - CSS `content` 属性对它们不起作用
+    - 宽高默认由内容决定（img 可以用 width/height 控制）
+    - 属于行内级元素，但表现类似行内块
