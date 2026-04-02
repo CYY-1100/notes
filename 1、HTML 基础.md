@@ -10,9 +10,9 @@
 - `<header>`, `<footer>`, `<nav>`, `<article>`, `<section>`, `<aside>`, `<main>`, `<figure>`, `<figcaption>`
 
 ## 行内元素、块级元素和行内块元素的区别？
-- 块级元素独占一行，可以设置宽高。
-- 行内元素与其他元素在同一行，宽高由内容决定，不可设置。
-- 行内块元素可以与其他元素在同一行，可以设置宽高。
+- 块级元素：独占一行，可以设置宽高。
+- 行内元素：与其他元素在同一行，宽高由内容决定，不可设置。
+- 行内块元素：可以与其他元素在同一行，可以设置宽高。
 
 ## `<script>` 标签放在 `<head>` 和 `<body>` 底部有什么区别？defer 和 async 属性有什么用？
 - 区别：放 head 会阻塞渲染。
@@ -39,13 +39,13 @@
 - href (Hypertext Reference)：建立当前文档与外部资源的链接，不会阻塞文档解析。
 
 ## 主流浏览器及其内核分别是什么？
-Chrome / Opera: Blink内核 (基于Webkit)
-Safari: Webkit内核
-Firefox: Gecko内核
-Internet Explorer: Trident内核
+- Chrome / Opera: Blink内核 (基于Webkit)
+- Safari: Webkit内核
+- Firefox: Gecko内核
+- IE: Trident内核
 
-## <meta>标签的作用是什么？常见属性有哪些？
-- <meta>标签提供关于HTML文档的元数据
+## `<meta>`标签的作用是什么？常见属性有哪些？
+- `<meta>`标签提供关于HTML文档的元数据
 - 设置字符集；提供页面描述；定义关键词；
 
 ## 从HTML层面，如何优化页面加载速度？
