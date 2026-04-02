@@ -37,6 +37,31 @@
   - 作用：指回创建该原型对象的构造函数本身，形成一个闭环。`原型对象.constructor === 构造函数`
 
 ## 什么是原型链？
+```js
+function A(){
+  this.name = 'aaa'
+}
+
+A.prototype.say = function(){
+  return 'hello'
+}
+
+var a = new A()
+var b = Object.create(a)
+var c = Object.create(b)
+
+console.log(c.say()) // hello 
+console.log(c.name) // aaa
+console.log(c)
+console.log(c.__proto__) // b
+console.log(c.__proto__.__proto__) // a Function A 的实列
+console.log(c.__proto__.__proto__.__proto__) // A Function A
+console.log(c.__proto__.__proto__.__proto__.__proto__) // Function.__proto__
+console.log(c.__proto__.__proto__.__proto__.__proto__.__proto__) // null Object.__proto__
+console.log(A.prototype === a.__proto__)
+console.log()
+console.log()
+```
 
 ## var, let, const 的区别
 | 特性 | var | let | const |
@@ -57,7 +82,7 @@
 - 对象方法：this 指向 该对象。
 
 ## 词法作用域是什么
-- 一个 函数 或 变量 的 作用域 是在定义的时候就确定了，而不是在函数运行的时候。
+- 也称为静态作用域，一个 函数 或 变量 的 作用域 是在定义的时候就确定了，而不是在函数运行的时候。
 
 ## 事件循环
 1. 检查调用栈是否为空。 如果调用栈不为空，则执行栈顶的任务，直到清空。
