@@ -37,7 +37,7 @@
 
 ### 语义化
 根据内容结构选用恰当的标签，提升可读性、可维护性、SEO 效果。
-常见标签：header, footer, nav, article, section, aside, main, figure, figfigcaption
+常见标签：header, footer, nav, article, section, aside, main, figure, figcaption
 
 ### 常用标签
 - `<meta>`：字符集、描述、视口
@@ -99,7 +99,8 @@ customElements.define('my-element', MyElement);
 ### Shadow DOM（影子 DOM）
 - 封装的 DOM 树，样式隔离
 - `mode: 'open'` 可被外部访问，`mode: 'closed'` 不可访问
-- 内部样式不会影响外部，外部样式也不会影响内部（除非使用 `:host`）
+- 内部样式不会影响外部，外部样式也不会影响内部
+- `:host` 伪类用于在 Shadow DOM 内部选择宿主元素（自定义组件本身）
 
 ### History API
 ```js
@@ -204,9 +205,29 @@ target.addEventListener('drop', e => {
 });
 ```
 
-### 复制（兼容旧浏览器）
+### Clipboard API（复制粘贴）
 ```js
-// 复制
+// 复制到剪贴板
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('复制成功');
+  } catch (err) {
+    console.error('复制失败:', err);
+  }
+}
+
+// 从剪贴板读取
+async function pasteText() {
+  try {
+    const text = await navigator.clipboard.readText();
+    console.log('粘贴内容:', text);
+  } catch (err) {
+    console.error('读取失败:', err);
+  }
+}
+
+// 兼容旧浏览器
 const input = document.createElement('input');
 input.value = '复制内容';
 document.body.appendChild(input);
@@ -351,8 +372,8 @@ ctx.fillRect(0, 0, 800, 600);
 ### 性能优化
 
 #### 加载优化
-- CSS 放在 `<head>`，JS 放在 `</body>` 底部
-- defer（按顺序）/ async（无序）异步加载
+- CSS 放在 `<head>` 中
+- JS 放在 `</body>` 内或使用 defer（按顺序执行）/ async（下载完立即执行，无序）
 - 图片懒加载 `loading="lazy"`、WebP/AVIF 格式
 - 响应式图片：`<picture>` 或 `srcset`
 
