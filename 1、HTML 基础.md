@@ -38,6 +38,32 @@
 - src (Source)：替换当前元素内容，浏览器会暂停解析。
 - href (Hypertext Reference)：建立当前文档与外部资源的链接，不会阻塞文档解析。
 
+## `<template>` 和 `<slot>` 有什么用？
+- `<template>`：定义 HTML 模板，内容不会直接渲染，可通过 JS 克隆使用
+- `<slot>`：Web Components 中的插槽，用于接收自定义元素的嵌套内容
+- 场景：组件复用、动态生成 DOM、减少重复代码
+```html
+<template id="my-card">
+  <style>
+    .card { border: 1px solid #ccc; padding: 16px; }
+  </style>
+  <div class="card">
+    <slot name="title">默认标题</slot>
+    <slot name="content">默认内容</slot>
+  </div>
+</template>
+
+<my-card>
+  <span slot="title">自定义标题</span>
+  <p slot="content">自定义内容</p>
+</my-card>
+```
+```js
+const template = document.getElementById('my-card');
+const clone = template.content.cloneNode(true);
+document.body.appendChild(clone);
+```
+
 ## 主流浏览器及其内核分别是什么？
 - Chrome / Opera: Blink内核。 (是Webkit的一个分支)
 - Safari: Webkit内核。
@@ -47,6 +73,20 @@
 ## `<meta>`标签的作用是什么？常见属性有哪些？
 - `<meta>`标签提供关于HTML文档的元数据
 - 设置字符集；提供页面描述；定义关键词；
+
+## data-* 自定义属性有什么用？
+- 用于存储页面或应用程序的私有数据
+- 命名规范：`data-` 开头，后跟任意小写字母和数字（如 `data-user-id`, `data-status`）
+- 获取方式：JS 中通过 `element.dataset.属性名`（驼峰式）或 `getAttribute('data-xxx')` 获取
+- 场景：组件传值、动态绑定数据、存储业务状态
+```html
+<div data-user-id="123" data-user-name="张三">用户</div>
+```
+```js
+const div = document.querySelector('div');
+console.log(div.dataset.userId);    // "123"
+console.log(div.dataset.userName);  // "张三"
+```
 
 ## 从HTML层面，如何优化页面加载速度？
 - 减少不必要的HTML标签，保持代码精简；
@@ -134,3 +174,100 @@
 - 防范 CSRF
     - 使用 CSRF Token (最有效的方法)
     - 键操作二次验证。（修改密码、转账等敏感操作）
+
+## ARIA 属性有什么用？如何提升可访问性？
+- ARIA (Accessible Rich Internet Applications)：增强残障用户对网页的可访问性
+- 常见属性：
+    - `role`：定义元素作用（如 `role="button"`, `role="navigation"`）
+    - `aria-label`：为元素提供可访问的标签
+    - `aria-hidden`：隐藏元素（不渲染为可访问树）
+    - `aria-expanded`：表示展开/折叠状态
+    - `aria-describedby`：关联描述信息
+- 场景：自定义组件、表单验证提示、动态内容更新
+
+## History API 有什么用？如何实现 SPA 路由？
+- 提供操作浏览器历史记录的能力
+- 核心方法：
+    - `pushState(state, title, url)`：添加新历史记录
+    - `replaceState(state, title, url)`：替换当前记录
+    - `popstate` 事件：监听浏览器前进/后退
+```js
+// 手动切换路由
+button.addEventListener('click', () => {
+  history.pushState({ page: 1 }, '', '/page1');
+});
+
+// 监听返回
+window.addEventListener('popstate', (e) => {
+  console.log(e.state); // 获取 state
+});
+```
+
+## 资源提示 (Resource Hints) 有哪些？区别是什么？
+- `dns-prefetch`：提前进行 DNS 解析（预解析域名）
+- `preconnect`：提前建立 TCP 连接、TLS 握手
+- `prefetch`：预取下一个页面可能用到的资源（低优先级）
+- `preload`：预加载当前页面必需的资源（高优先级）
+- `prerender`：预渲染整个页面（后台加载并执行）
+```html
+<link rel="dns-prefetch" href="//example.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" href="main.js" as="script">
+<link rel="prefetch" href="next-page.js">
+```
+
+## Viewport meta 标签有哪些常用配置？
+- 控制移动端视口和缩放行为
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+```
+- 常用属性：
+    - `width`：视口宽度（device-width 表示设备宽度）
+    - `initial-scale`：初始缩放比例
+    - `maximum-scale`：最大缩放比例
+    - `user-scalable`：是否允许用户缩放（no 禁用）
+
+## `<link>` 标签的 rel 属性有哪些常见值？
+- `stylesheet`：引入外部样式表
+- `icon` / `shortcut icon`：网站图标
+- `preload`：预加载资源
+- `prefetch`：预取资源
+- `dns-prefetch`：DNS 预解析
+- `preconnect`：预连接
+- `canonical`：规范化链接（SEO）
+- `manifest`：引入 PWA 清单文件
+
+## 表单高级特性有哪些？
+- `autocomplete`：启用浏览器自动填充（on/off）
+- `autofocus`：页面加载时自动聚焦
+- `datalist`：为 input 提供建议选项
+- 按钮属性：`formaction`, `formenctype`, `formmethod`, `formtarget`
+```html
+<input list="browsers" name="browser">
+<datalist id="browsers">
+  <option value="Chrome">
+  <option value="Firefox">
+  <option value="Safari">
+</datalist>
+
+<form action="/submit" method="POST">
+  <input type="submit" formaction="/save-draft" value="保存草稿">
+</form>
+```
+
+## SEO 优化有哪些 HTML 手段？
+- 语义化标签：正确使用 h1-h6、header、nav、main 等
+- meta 标签：title、description、keywords
+- 结构化数据：使用 Schema.org (JSON-LD)
+- canonical：避免重复内容
+- 移动端适配：viewport 设置
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "示例网站",
+  "url": "https://example.com"
+}
+</script>
+```
