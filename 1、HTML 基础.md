@@ -4,7 +4,29 @@
 
 ### 文档结构
 - `<!DOCTYPE html>`：声明文档类型，告知浏览器按 HTML5 规范解析
-- 浏览器内核：Chrome/Opera(Blink), Safari(Webkit), Firefox(Gecko), IE(Trident)
+
+### HTML 文档结构
+| 标签 | 作用 |
+|------|------|
+| `<html>` | 根元素，包含 lang 属性声明语言 |
+| `<head>` | 元数据区，存放不显示的内容（标题、样式、脚本等） |
+| `<body>` | 文档主体，包含所有可见内容 |
+
+#### `<head>` 中常用标签
+- `<title>`：页面标题（浏览器标签显示）
+- `<meta>`：字符集、视口、描述
+- `<link>`：引入外部资源（CSS、图标）
+- `<style>`：内联样式
+- `<script>`：引入或编写脚本
+- `<base>`：基准 URL
+
+#### `<body>` 中常用标签
+- 文本：h1-h6, p, span, div
+- 链接：a
+- 列表：ul, ol, li
+- 表格：table, tr, td
+- 表单：form, input, button
+- 多媒体：img, video, audio
 
 ### 元素分类
 | 类型 | 特征 | 示例 |
@@ -32,8 +54,6 @@
 - Cookie：4KB，随请求发送，可设过期
 - LocalStorage：5MB+，永不过期
 - SessionStorage：5MB+，关闭即失效
-
----
 
 ## 中级
 
@@ -88,7 +108,15 @@ history.replaceState(state, '', '/page2');
 window.addEventListener('popstate', e => console.log(e.state));
 ```
 
-### `<iframe>` 跨域通信
+### `<iframe>` 优缺点
+| 优点 | 缺点 |
+|------|------|
+| 嵌入外部页面/广告，内容复用 | 影响主页加载速度 |
+| 主页面和 iframe 脚本隔离 | 不利于 SEO |
+| 可用于沙箱安全隔离 | 移动设备体验差 |
+| 支持跨域嵌入 | 存在安全性问题（点击劫持） |
+
+- 跨域通信：使用 `postMessage`
 ```js
 iframe.contentWindow.postMessage('data', 'https://example.com');
 window.addEventListener('message', e => {
@@ -176,6 +204,17 @@ target.addEventListener('drop', e => {
 });
 ```
 
+### 复制（兼容旧浏览器）
+```js
+// 复制
+const input = document.createElement('input');
+input.value = '复制内容';
+document.body.appendChild(input);
+input.select();
+document.execCommand('copy');
+document.body.removeChild(input);
+```
+
 ### 事件委托
 将事件绑定到父元素，利用冒泡处理子元素事件，减少监听器数量。
 ```js
@@ -184,10 +223,84 @@ parent.addEventListener('click', e => {
 });
 ```
 
-### ARIA 属性
-role, aria-label, aria-hidden, aria-expanded, aria-describedby
+### 语义化标签补充
+| 标签 | 用途 |
+|------|------|
+| `<details>` / `<summary>` | 折叠面板，原生展开收起 |
+| `<dialog>` | 原生模态框，支持 `showModal()` |
+| `<figure>` / `<figcaption>` | 图片/图表注释 |
+| `<time>` | 时间语义化 |
+| `<mark>` | 高亮文本 |
+| `<blockquote>` / `<cite>` / `<q>` | 引用 |
+| `<code>` / `<pre>` / `<kbd>` | 代码相关 |
+| `<fieldset>` / `<legend>` | 表单分组 |
+| `<output>` | 表单计算结果 |
+| `<progress>` / `<meter>` | 进度条/仪表盘 |
+| `<wbr>` | 软换行（单词内可断行） |
 
----
+### `<picture>` 响应式图片
+```html
+<picture>
+  <source srcset="img.avif" type="image/avif">
+  <source srcset="img.webp" type="image/webp">
+  <img src="img.jpg" alt="图片">
+</picture>
+```
+
+### decoding 属性
+图片解码方式
+- `sync`（默认）：同步解码，阻塞渲染
+- `async`：异步解码，不阻塞渲染
+- `auto`：浏览器决定
+```html
+<img src="photo.jpg" decoding="async" alt="异步解码">
+```
+
+### download 属性
+强制下载而非导航到资源
+```html
+<a href="file.pdf" download>下载 PDF</a>
+<a href="file.pdf" download="自定义文件名.pdf">重命名下载</a>
+```
+- 同源资源：直接触发下载
+- 跨域资源：只是导航到 URL（download 属性无效）
+- 可选值：指定下载后的文件名
+
+### enctype 属性与 multipart/form-data
+
+表单数据编码类型，决定数据发送到服务器前的格式。
+
+| enctype 值 | 说明 | 用途 |
+|------------|------|------|
+| application/x-www-form-urlencoded | 默认，URL 编码 | 普通表单 |
+| multipart/form-data | 多部分编码，支持文件上传 | 文件上传 |
+| text/plain | 纯文本 | 仅调试 |
+
+#### multipart/form-data
+- 每个字段用boundary分隔
+- 支持传输二进制数据（文件、图片等）
+- 非 ASCII 字符直接传输
+- 表单必须用 POST 方法
+
+```html
+<form action="/upload" method="POST" enctype="multipart/form-data">
+  <input type="text" name="username">
+  <input type="file" name="avatar">
+  <button type="submit">上传</button>
+</form>
+```
+
+#### 文件上传进阶
+```html
+<!-- 多文件上传 -->
+<input type="file" name="images" multiple accept="image/*">
+
+<!-- 指定文件类型 -->
+<input type="file" accept=".pdf,.doc,.docx">
+
+<!-- 拍照上传（移动端） -->
+<input type="file" accept="image/*" capture="user">
+```
 
 ## 高级
 
@@ -223,24 +336,6 @@ self.addEventListener('fetch', e => {
   "icons": [{ "src": "icon.png", "sizes": "192x192" }]
 }
 ```
-
-### 浏览器渲染流程
-1. **DOM 树**：解析 HTML
-2. **CSSOM 树**：解析 CSS
-3. **Render Tree**：DOM + CSSOM 合并
-4. **Layout**：计算布局（重排）
-5. **Paint**：绘制内容（重绘）
-6. **Composite**：合成图层
-
-#### 重排 vs 重绘
-| 类型 | 触发条件 | 性能影响 |
-|------|----------|----------|
-| 重排 | 几何属性变化（宽高、位置） | 严重 |
-| 重绘 | 外观变化（颜色、背景） | 较轻 |
-
-#### 合成层优化
-- 使用 `transform`（translate/scale）、`opacity` 可触发 GPU 加速
-- 避免重排重绘，提升动画性能
 
 ### 离屏渲染
 Canvas 在可见区域外绘制，减少主线程负担
@@ -282,7 +377,6 @@ ctx.fillRect(0, 0, 800, 600);
 - Gzip/Brotli 压缩，CDN 加速
 
 ### 安全
-
 #### XSS 防范
 - 输入验证过滤、输出编码转义
 - CSP 内容安全策略
