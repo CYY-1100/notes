@@ -71,6 +71,14 @@ h2 ~ p { }       /* 兄弟选择器（全部） */
 - link：HTML 标签，并行加载
 - @import：串行加载，会阻塞渲染
 
+### CSS 阻塞渲染
+- 必须等 CSS 加载完成
+- 避免 @import
+
+### FOUC（无样式内容闪烁）
+- 原因：CSS 加载晚于 HTML
+- 解决：CSS 放在 `<head>` 中
+
 ## 中级
 ### Flex 布局
 ```css
@@ -150,8 +158,6 @@ transform: translate(-50%, -50%);
 }
 ```
 
-### CSS 变量
-
 ### 响应式
 ```css
 @media (max-width: 768px) { }   /* 手机 */
@@ -187,13 +193,7 @@ HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个
 - will-change 提升合成层（谨慎）
 - 提取公共样式
 
-### CSS 阻塞渲染
-- 必须等 CSS 加载完成
-- 避免 @import
 
-### FOUC（无样式内容闪烁）
-- 原因：CSS 加载晚于 HTML
-- 解决：CSS 放在 `<head>` 中
 
 ### CSS 模块化
 | 方案 | 说明 |
