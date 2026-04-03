@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <style>
+    body { margin: 0; }
+
+    /* 吸顶头部容器 */
+    .header {
+      /* 关键：sticky */
+      position: sticky;
+      /* 距离视口顶部 0 时固定 */
+      top: 0; 
+
+      /* 样式美化 */
+      background: white;
+      padding: 16px 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      border-bottom: 1px solid #eee;
+    }
+
+    /* 内容 */
+    .content {
+      height: 200vh; 
+      padding: 20px;
+      background: linear-gradient(to bottom, #f9f9f9, #e0e0e0);
+    }
+
+  </style>
+</head>
+<body>
+  <!-- 吸顶头部 -->
+  <header class="header"> 滚动吸顶 </header>
+
+  <!-- 内容 -->
+  <main class="content">
+    <h1>滚动</h1>
+    <h1>滚动</h1>
+    <h1>向下滚动</h1>
+  </main>
+</body>
+</html>
