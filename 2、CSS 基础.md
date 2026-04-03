@@ -1,6 +1,16 @@
 # CSS 基础
 
 ## 初级
+### 什么是 CSS？
+- 全称：Cascading Style Sheets（层叠样式表）
+- 作用：美化 HTML 页面，控制颜色、字体、间距、布局等。
+- 与 HTML 的关系：HTML 是“骨架”，CSS 是“皮肤”。
+
+### CSS 的引入方式
+- 行内样式：`<p style="color: red;">`
+- 内部样式表：`在 <head> 中 <style> 标签写`
+- 外部样式表：`<link rel="stylesheet" href="style.css">`
+
 ### 选择器
 ```css
 /* 基础选择器 */
@@ -123,6 +133,32 @@ top: 50%; left: 50%;
 transform: translate(-50%, -50%);
 ```
 
+### 文本溢出
+- 单行：text-overflow: ellipsis + white-space: nowrap
+- 多行文本: 使用 -webkit-line-clamp（现代最佳实践）
+
+### CSS 变量（Custom Properties）
+
+### 定位与层叠上下文
+- 深入 position
+- z-index 与层叠上下文
+
+### 层叠级别（从低到高）
+1. 背景/边框
+2. z-index < 0
+3. 块级盒子
+4. 浮动盒子
+5. inline
+6. z-index: 0/auto
+7. z-index > 0
+
+### 为什么 z-index：9999 没生效？
+- 它的父元素可能创建了一个新的层叠上下文，且父元素的 z-index 很低（比如 1）。
+
+### CSS 动画与过渡
+- Transition（过渡）
+- Animation（关键帧动画）
+
 ### position 定位
 | 值 | 参照 | 说明 |
 |----|------|------|
@@ -165,26 +201,17 @@ transform: translate(-50%, -50%);
 ```
 
 ## 高级
-### 层叠上下文（z-index）
-HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个层级的容器。
+围绕性能、可维护性、设计系统、浏览器原生能力替代 JS 等目标展开。
 
-#### 触发条件
-- 根元素
-- position + z-index
-- opacity < 1
-- transform/filter/will-change
+### CSS Grid 子网格（Subgrid）
+- 决嵌套 Grid 布局中对齐难题
 
-#### 层叠级别（从低到高）
-1. 背景/边框
-2. z-index < 0
-3. 块级盒子
-4. 浮动盒子
-5. inline
-6. z-index: 0/auto
-7. z-index > 0
+### 容器查询（Container Queries）
+- 取代媒体查询，实现组件级响应式
 
-#### 为什么 z-index：9999 没生效？
-- 它的父元素可能创建了一个新的层叠上下文，且父元素的 z-index 很低（比如 1）。
+### 锚点定位（Anchor Positioning）
+- 传统锚点定位方式，通过 HTML 的 `<a>` 标签和 id 属性来实现。
+- CSS position: anchor() (实验性功能)
 
 ### 性能优化
 - 选择器层级 < 3
@@ -193,7 +220,8 @@ HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个
 - will-change 提升合成层（谨慎）
 - 提取公共样式
 
-
+### 作用域样式（Scoped Styles）
+- 通过 @scope 实现局部样式隔离（类似 Vue 的 scoped）
 
 ### CSS 模块化
 | 方案 | 说明 |

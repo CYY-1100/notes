@@ -1,9 +1,12 @@
 # HTML 基础
 
 ## 初级
+### 什么是 HTML？
+- 全称：HyperText Markup Language，超文本标记语言
+- 作用：用于定义网页的内容、结构和语义
 
-### 文档结构
-- `<!DOCTYPE html>`：声明文档类型，告知浏览器按 HTML5 规范解析
+### `<!DOCTYPE html>`是什么？
+- 声明文档类型，告知浏览器按 HTML5 规范解析
 
 ### HTML 文档结构
 | 标签 | 作用 |
