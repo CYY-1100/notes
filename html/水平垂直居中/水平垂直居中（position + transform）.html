@@ -4,19 +4,19 @@
 <head>
     <style>
         .parent {
+            /* 为子元素的绝对定位提供参考 */
+            position: relative;
             height: 100vh;
             background-color: #f0f0f0;
-
-            display: grid;
-            /* 简写属性, 等价于:
-                justify-items: center;
-                align-items: center;
-            */
-            place-items: center;
         }
 
         .child {
-            background-color: #2196F3;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* 向左向上移动自身宽高的一半 */
+            transform: translate(-50%, -50%);
+            background-color: #FF9800;
             padding: 20px;
             border-radius: 5px;
         }

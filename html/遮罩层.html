@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <style>
+        /* 遮罩层 */
+        #overlay {
+            width: 100vw;
+            height: 100vh;
+            /* 定位 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            /* 半透明黑色 */
+            background: rgba(0, 0, 0, 0.6);
+            /* 居中 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 层叠 */
+            z-index: 1000;
+            /* 核心：完全透明 */
+            opacity: 0;
+            /* 不可见且不响应交互 */
+            visibility: hidden;
+            /* 动画 */
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        /* 显示状态 */
+        #overlay.active {
+            /* 核心：显示 */
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 弹窗内容 */
+        .modal {
+            background: white;
+            padding: 32px;
+            border-radius: 6px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <button id="openModal">打开遮罩层</button>
+
+    <!-- 遮罩层结构 -->
+    <div id="overlay" role="dialog" aria-modal="true">
+        <div class="modal">
+            <div id="closeModal">&times;</div>
+            <p>这是一个遮罩层示例。你可以在这里放置表单、图片、确认框等内容。</p>
+            <button id="confirmBtn">确定</button>
+        </div>
+    </div>
+
+</body>
+<script>
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeModal');
+    const confirmBtn = document.getElementById('confirmBtn');
+    
+    // 打开遮罩
+    const openBtn = document.getElementById('openModal');
+    openBtn.addEventListener('click', () => {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 禁止背景滚动
+    });
+
+    // 关闭遮罩
+    function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = ''; // 恢复滚动
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    confirmBtn.addEventListener('click', closeModal);
+
+    // 点击遮罩背景关闭
+    let isClose = false;
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay && isClose) closeModal();
+    });
+</script>
+
+</html>

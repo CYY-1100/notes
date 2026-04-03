@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <style>
+    /* 基础样式 */
+    .box {
+      width: 200px;
+      height: 100px;
+      background-color: #3498db;
+      color: white;
+      line-height: 100px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .top {
+      background-color: #3498db;
+      /* 蓝色 */
+      margin-bottom: 30px;
+      /* 下方间距 30px */
+    }
+
+    .bottom {
+      background-color: #e74c3c;
+      /* 红色 */
+      margin-top: 20px;
+      /* 上方间距 20px */
+    }
+
+    /* --- 修复方案 --- */
+
+    /* 方案：利用 BFC 包裹其中一个元素 */
+    .bfc-container {
+      /* 触发 BFC 的方式有很多，这里演示 overflow: hidden */
+      /* 也可以尝试使用 display: flow-root; */
+      overflow: hidden;
+      border: 1px dashed #999;
+      /* 加个虚线框方便你看清这个 BFC 容器的范围 */
+      margin-top: 20px;
+      /* 保持和 .bottom 一样的间距 */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 场景 1：发生折叠 -->
+  <p>场景 1：普通兄弟元素（间距应为 30px，而非 50px）</p>
+  <div class="box top">我是上方元素 (mb: 30px)</div>
+  <div class="box bottom">我是下方元素 (mt: 20px)</div>
+
+  <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ddd;">
+
+  <!-- 场景 2：阻止折叠 -->
+  <p>场景 2：BFC 隔离后（间距成功变为 30px + 20px = 50px）</p>
+  <div class="box top">我是上方元素 (mb: 30px)</div>
+
+  <!-- 将下方元素包裹在 BFC 容器中 -->
+  <div class="bfc-container">
+    <div class="box bottom">我是下方元素 (mt: 20px)</div>
+  </div>
+
+</body>
+
+</html>

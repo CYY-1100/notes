@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body{ margin: 0; }
+        
+        .container {
+            /* 防止内容挤压 */
+            min-width: 600px;
+        }
+
+        /* 所有列左浮动 */
+        .main-wrap,
+        .left,
+        .right {
+            float: left;
+        }
+
+        /* 中间包裹层占满整行 */
+        .main-wrap {
+            width: 100%;
+        }
+
+        /* 主内容区通过 margin 腾出左右空间 */
+        .main {
+            margin-left: 200px;
+            /* 左侧栏宽度 */
+            margin-right: 150px;
+            /* 右侧栏宽度 */
+            background: #ccc;
+            height: 100vh;
+        }
+
+        /* 左侧栏：固定宽度 + 负 margin 拉到左边 */
+        .left {
+            width: 200px;
+            /* 向左移动整个容器宽度 */
+            margin-left: -100%;
+            background: #f99;
+            height: 100vh;
+        }
+
+        /* 右侧栏：固定宽度 + 负 margin 拉到右边 */
+        .right {
+            width: 150px;
+            /* 向左移动自身宽度 */
+            margin-left: -150px;
+            background: #9f9;
+            height: 100vh;
+        }
+
+        /* 清除浮动（可选） */
+        .container::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 中间主内容区（优先渲染） -->
+        <div class="main-wrap">
+            <div class="main">Main Content</div>
+        </div>
+        <!-- 左侧栏 -->
+        <div class="left">Left</div>
+        <!-- 右侧栏 -->
+        <div class="right">Right</div>
+    </div>
+</body>
+
+</html>

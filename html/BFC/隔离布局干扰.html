@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  /* --- 模拟外部环境的“脏”样式 --- */
+  .external-wrapper {
+    border: 2px dashed #999;
+    padding: 20px;
+    background-color: #f0f0f0;
+  }
+  
+  /* 模拟外部有一个浮动元素，可能会干扰后续布局 */
+  .external-float {
+    float: left;
+    width: 50px;
+    height: 50px;
+    background: #333;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    margin-right: 10px;
+  }
+
+  /* --- 你的组件样式 --- */
+  .my-component {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px; /* 试图与上方保持距离 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  /* --- 修复方案 --- */
+  /* 给组件添加这个类，开启“防护罩” */
+  .isolated {
+    /* 触发 BFC，建立独立上下文 */
+    display: flow-root; 
+    /* 或者使用 overflow: hidden (但在弹窗场景下可能会裁剪阴影) */
+  }
+</style>
+</head>
+<body>
+
+  <div class="external-wrapper">
+    <div class="external-float">浮动</div>
+    
+    <!-- 场景 1：未隔离，可能受到外部浮动影响 -->
+    <p>场景 1：普通组件（文字可能会环绕上面的黑色浮动块）</p>
+    <div class="my-component">
+      <h3>普通组件</h3>
+      <p>我是组件内容。注意看，因为外部有个浮动元素，我的文字可能会发生环绕，或者我的位置被挤占了。</p>
+    </div>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #ccc;">
+
+    <!-- 场景 2：已隔离，不受影响 -->
+    <p>场景 2：BFC 隔离组件（完全无视外部的浮动块）</p>
+    <div class="my-component isolated">
+      <h3>隔离组件 (BFC)</h3>
+      <p>我触发了 BFC (display: flow-root)。</p>
+      <p>我现在是一个独立的布局环境，外部的黑色浮动块完全无法影响我，我也绝不会去环绕它。</p>
+    </div>
+  </div>
+
+</body>
+</html>

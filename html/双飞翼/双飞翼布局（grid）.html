@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body{ margin: 0; }
+        
+        .container {
+            display: grid;
+            grid-template-areas: "left main right";
+            grid-template-columns: 200px 1fr 150px;
+            min-height: 100vh;
+        }
+
+        .left  { grid-area: left;  background: #f99; }
+        .main  { grid-area: main;  background: #ccc; }
+        .right { grid-area: right; background: #9f9; }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <main class="main">Main Content</main>
+        <aside class="left">Left</aside>
+        <aside class="right">Right</aside>
+    </div>
+</body>
+
+</html>

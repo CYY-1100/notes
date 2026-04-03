@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <style>
+    /* 基础重置 */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    /* 左侧侧边栏：固定宽度，浮动 */
+    .sidebar {
+      float: left;
+      width: 200px;
+      height: 300px;
+      background-color: #3498db;
+      /* 蓝色 */
+      color: white;
+      padding: 20px;
+    }
+
+    /* --- 右侧内容区 --- */
+
+    /* 方案 A：触发 BFC (利用 overflow: hidden) */
+    .content-bfc {
+      /* 核心代码：触发 BFC */
+      overflow: hidden;
+
+      /* 视觉样式 */
+      height: 300px;
+      background-color: #ecf0f1;
+      /* 浅灰色 */
+      border: 1px solid #bdc3c7;
+      padding: 20px;
+    }
+
+    /* 方案 B：现代推荐 (利用 display: flow-root) */
+    .content-flow-root {
+      /* 核心代码：触发 BFC，无副作用 */
+      display: flow-root;
+
+      /* 视觉样式 */
+      height: 300px;
+      background-color: #e8f8f5;
+      /* 浅绿色 */
+      border: 1px solid #a3e4d7;
+      padding: 20px;
+      margin-top: 20px;
+      /* 为了演示区分，加个间距 */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 场景 1：利用 overflow: hidden 实现自适应 -->
+  <h3>场景 1：右侧使用 overflow: hidden 触发 BFC</h3>
+  <div class="sidebar">
+    <h4>侧边栏</h4>
+    <p>固定宽度 200px</p>
+  </div>
+  <div class="content-bfc">
+    <h4>主内容区</h4>
+    <p>我触发了 BFC，所以我自动填满了剩余空间，并且不会被左边的侧边栏遮挡。</p>
+  </div>
+
+  <!-- 场景 2：利用 display: flow-root 实现自适应 (推荐) -->
+  <h3>场景 2：右侧使用 display: flow-root 触发 BFC</h3>
+  <div class="sidebar">
+    <h4>侧边栏</h4>
+    <p>固定宽度 200px</p>
+  </div>
+  <div class="content-flow-root">
+    <h4>主内容区</h4>
+    <p>我使用了 display: flow-root，效果同上，但我没有隐藏溢出的副作用。</p>
+  </div>
+
+</body>
+
+</html>

@@ -1,8 +1,32 @@
-#### 三角形
-```css
-.triangle {
-  width: 0; height: 0;
-  border: 50px solid transparent;
-  border-bottom: 50px solid red;
-}
-```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    .triangle {
+      width: 0;
+      height: 0;
+      /* 通过设置不同方向的边框，可以创建指向不同方向的三角形 */
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 100px solid red;
+    }
+
+    .triangle2 {
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-top: 100px solid blue;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="triangle"></div>
+  <div class="triangle2"></div>
+
+</body>
+
+</html>

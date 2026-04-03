@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multi-column 瀑布流</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    .container {
+      column-count: 3;           /* 列数 */
+      column-gap: 16px;          /* 列间距 */
+      padding: 16px;
+    }
+
+    .item {
+      break-inside: avoid;       /* 防止卡片被分到两列 */
+      margin-bottom: 16px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .container:nth-child(1) { background: #ff7e5f; }
+    .container:nth-child(2) { background: #feb47b; }
+    .container:nth-child(3) { background: #86a8e7; }
+    .container:nth-child(4) { background: #91eae4; }
+
+    /* 响应式：小屏变单列 */
+    @media (max-width: 768px) {
+      .container {
+        column-count: 1;
+      }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .container {
+        column-count: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item" style="height: 120px;">卡片 1</div>
+    <div class="item" style="height: 200px;">卡片 2</div>
+    <div class="item" style="height: 160px;">卡片 3</div>
+    <div class="item" style="height: 180px;">卡片 4</div>
+    <!-- 更多卡片... -->
+  </div>
+</body>
+</html>

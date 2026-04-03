@@ -1,8 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
 
-#### 正方形
-```css
-.square {
-  width: 50%;
-  aspect-ratio: 1;
-}
-```
+<head>
+  <style>
+    /* 应用场景：商品卡片中的主图；头像；图片墙；视频封面16：9； */
+
+    /* 兼容性极好 */
+    .square {
+      width: 50%;
+      /* 宽度相对于父容器的50% */
+      height: 0;
+      /* 高度设为0，由padding撑开 */
+      padding-bottom: 50%;
+      /* padding-bottom为宽度的50%，从而形成1:1的正方形 */
+      background: #42b983;
+    }
+
+    /* 现代方案 */
+    /* .square {
+      width: 50%;
+      aspect-ratio: 1/1;
+      background: #42b983;
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="square"></div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        /* :root 是文档根元素（即 <html>） */
+        :root {
+            /* 必须以 -- 开头 */
+            --main-color: #3498db;
+            --font-size: 16px;
+            --spacing: 1rem;
+        }
+
+        /* 使用 */
+        .button {
+            background-color: var(--main-color);
+            font-size: var(--font-size);
+            padding: var(--spacing);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="button" onclick="changeColor()">Change Color and font size</div>
+</body>
+<script>
+    function changeColor(){
+        // 获取变量值
+        const root = document.documentElement;
+        const color = getComputedStyle(root).getPropertyValue('--main-color');
+    
+        // 设置变量值（实时生效！）
+        root.style.setProperty('--main-color', '#e74c3c');
+        root.style.setProperty('--font-size', '24px');
+    }
+</script>
+
+</html>

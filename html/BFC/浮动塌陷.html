@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <style>
+    /* 基础样式 */
+    .container {
+      border: 2px solid #333;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .float-box {
+      float: left;
+      width: 150px;
+      height: 100px;
+      background-color: #3498db;
+      /* 蓝色 */
+      color: white;
+      line-height: 100px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* --- 修复方案 --- */
+
+    /* 方案 A：使用 overflow: hidden (最常用) */
+    .bfc-overflow {
+      overflow: hidden;
+      /* 触发 BFC */
+      border-color: #e74c3c;
+      /* 红色边框，仅作演示区分 */
+    }
+
+    /* 方案 B：使用 display: flow-root (现代最佳实践) */
+    .bfc-flow-root {
+      /* 触发 BFC，且无副作用 */
+      display: flow-root;
+      /* 绿色边框，仅作演示区分 */
+      border-color: #2ecc71;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 场景 1：塌陷状态 -->
+  <div class="container">
+    <div class="float-box">浮动元素</div>
+    <p>父容器未触发BFC，高度塌陷，边框只有一条线。</p>
+  </div>
+
+  <!-- 场景 2：修复状态 (overflow: hidden) -->
+  <div class="container bfc-overflow">
+    <div class="float-box">浮动元素</div>
+    <p>父容器触发BFC (overflow: hidden)，高度正常包裹。</p>
+  </div>
+
+  <!-- 场景 3：修复状态 (display: flow-root) -->
+  <div class="container bfc-flow-root">
+    <div class="float-box">浮动元素</div>
+    <p>父容器触发BFC (display: flow-root)，高度正常包裹。</p>
+  </div>
+
+</body>
+
+</html>

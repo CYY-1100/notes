@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body{ margin: 0; }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .main {
+            flex: 1;
+            order: 2;
+            /* 视觉上放在中间 */
+            background: #ccc;
+        }
+
+        .left {
+            width: 200px;
+            order: 1;
+            /* 视觉上放左边 */
+            background: #f99;
+        }
+
+        .right {
+            width: 150px;
+            order: 3;
+            /* 视觉上放右边 */
+            background: #9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <main class="main">Main Content</main>
+        <aside class="left">Left</aside>
+        <aside class="right">Right</aside>
+    </div>
+</body>
+
+</html>

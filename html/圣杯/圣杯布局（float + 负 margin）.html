@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* 1. 基础样式 */
+    body{ margin: 0; }
+
+    .header,
+    .footer {
+      height: 50px;
+      background-color: #ccc;
+      text-align: center;
+      line-height: 50px;
+    }
+
+    /* 2. 容器设置 */
+    .container {
+      /* 为左右两栏预留空间 */
+      padding: 0 200px 0 150px;
+      /* 触发 BFC，防止高度塌陷 */
+      overflow: hidden;
+    }
+
+    /* 3. 三栏共同样式 */
+    .main,
+    .left,
+    .right {
+      float: left;
+      height: 200px;
+      position: relative;
+    }
+
+    /* 4. 各栏尺寸及颜色 */
+    .main {
+      /* 宽度为父容器的100%，但由于父容器有padding，所以会自动填满中间区域 */
+      width: 100%;
+      background-color: #b0f9c2;
+    }
+
+    .left {
+      width: 150px;
+      background-color: burlywood;
+      /* 关键步骤：将左栏拉到上一行的末尾，即中间内容区的最左侧 */
+      margin-left: -100%;
+      /* 通过相对定位将其向左推，放入由padding产生的预留空间里 */
+      left: -150px;
+    }
+
+    .right {
+      width: 200px;
+      background-color: antiquewhite;
+      /* 关键步骤：将右栏拉到上一行的末尾，即盖在中间内容区上面 */
+      margin-left: -200px;
+      /* 通过相对定位将其向右推，放入由padding产生的预留空间里 */
+      left: 200px;
+    }
+
+    .footer {
+      /* 清除浮动，确保footer在三栏下方 */
+      clear: both;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">Header</div>
+
+  <div class="container">
+    <!-- 主要内容区放在最前面 -->
+    <div class="main">Main Content (HTML中在前)</div>
+    <div class="left">Left Sidebar</div>
+    <div class="right">Right Sidebar</div>
+  </div>
+
+  <div class="footer">Footer</div>
+
+</body>
+
+</html>

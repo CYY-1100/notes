@@ -10,10 +10,10 @@ p { }           /* 元素选择器 */
 * { }           /* 通配符选择器 */
 
 /* 组合选择器 */
-.class p { }     /* 后代选择器 */
-.class > p { }   /* 子选择器 */
-h2 + p { }       /* 相邻选择器 */
-h2 ~ p { }       /* 兄弟选择器 */
+.class p { }     /* 后代选择器（子孙都可以） */
+.class > p { }   /* 子选择器（子） */
+h2 + p { }       /* 相邻选择器（最近一个） */
+h2 ~ p { }       /* 兄弟选择器（全部） */
 
 /* 属性选择器 */
 [title] { }              /* 有属性 */
@@ -34,7 +34,7 @@ h2 ~ p { }       /* 兄弟选择器 */
 ::after { content: ""; }    /* 后插入 */
 ```
 
-### 优先级
+### 选择器权重
 | 选择器 | 权重 |
 |------------|------|
 | !important | 最高 |
@@ -44,13 +44,13 @@ h2 ~ p { }       /* 兄弟选择器 */
 | 元素       | 1 |
 | *         | 0 |
 
-### 盒模型
+### 盒模型是什么？
 | 模型 | width 包含 |
 |------|------------|
 | content-box（标准） | 仅内容 |
 | border-box（IE） | 内容 + padding + border |
 
-### 隐藏元素
+### 隐藏元素有哪些方式？
 | 属性 | 空间 | 渲染 |
 |------|------|------|
 | display: none | 不占据 | 触发重排 |
@@ -66,8 +66,6 @@ h2 ~ p { }       /* 兄弟选择器 */
 | vw/vh | 相对 | 视口宽/高的 1% |
 | vmin/vmax | 相对 | 视口较小/较大边的 1% |
 | % | 相对 | 相对于父元素 |
-| ch/ex | 相对 | 相对于字体尺寸 |
-| pt/pc/in | 绝对 | 打印单位（1in = 96px） |
 
 ### link vs @import
 - link：HTML 标签，并行加载
@@ -127,20 +125,23 @@ transform: translate(-50%, -50%);
 | sticky | 视口/父元素 | 阈值前固定 |
 
 ### BFC（块级格式化上下文）
+一个独立的布局容器，内部元素按照特定规则排列，且不会影响外部其他元素。
+
+#### BFC的核心作用
+- 解决"浮动塌陷"问题。
+- 阻止外边距折叠。
+- 隔离布局干扰。
 
 #### 触发条件
-overflow, float, position: absolute/fixed, display: flex/inline-flex/inline-block/grid
+- `<html>` 页面默认的 BFC 容器。
+- 浮动元素：float 值不为 none。
+- 绝对定位元素：position 为 absolute 或 fixed。
+- overflow：不为 visible 值时。
+- display：flex/inline-flex/inline-block/grid等。
 
-#### 特性
-- 内部垂直排列
-- 外边距合并
-- 清除浮动
-- 不被浮动覆盖
-
-### 浮动
-元素脱离文档流，向左/右移动。
-
-#### 清除浮动
+### 清除浮动的方式有哪些？
+1. 伪元素 + clear: both（推荐：现代标准方案）
+2. 父元素设置 overflow: hidden/auto
 ```css
 .clearfix::after {
   content: "";
@@ -150,15 +151,6 @@ overflow, float, position: absolute/fixed, display: flex/inline-flex/inline-bloc
 ```
 
 ### CSS 变量
-```css
-:root { --color: red; }
-.class { --size: 10px; }
-color: var(--color);
-```
-```js
-el.style.setProperty('--color', 'blue');
-getComputedStyle(el).getPropertyValue('--color');
-```
 
 ### 响应式
 ```css
@@ -167,7 +159,7 @@ getComputedStyle(el).getPropertyValue('--color');
 ```
 
 ## 高级
-### 层叠上下文
+### 层叠上下文（z-index）
 HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个层级的容器。
 
 #### 触发条件
@@ -185,6 +177,9 @@ HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个
 6. z-index: 0/auto
 7. z-index > 0
 
+#### 为什么 z-index：9999 没生效？
+- 它的父元素可能创建了一个新的层叠上下文，且父元素的 z-index 很低（比如 1）。
+
 ### 性能优化
 - 选择器层级 < 3
 - 避免通配符 *
@@ -192,13 +187,11 @@ HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个
 - will-change 提升合成层（谨慎）
 - 提取公共样式
 
-### 关键渲染路径
-
-#### CSS 阻塞渲染
+### CSS 阻塞渲染
 - 必须等 CSS 加载完成
 - 避免 @import
 
-#### FOUC（无样式内容闪烁）
+### FOUC（无样式内容闪烁）
 - 原因：CSS 加载晚于 HTML
 - 解决：CSS 放在 `<head>` 中
 
@@ -210,35 +203,16 @@ HTML 元素在三维空间中按层叠顺序排列，层叠上下文就是这个
 | styled-components | JS 中写 CSS |
 | Tailwind CSS | 原子化 CSS |
 
-### 新特性
-```css
-/* 容器查询 */
-@container (min-width: 300px) { }
-
-/* :has() 父选择器 */
-button:has(.icon) { }
-
-/* clamp() */
-font-size: clamp(14px, 2vw, 24px);
-
-/* 嵌套 */
-.parent {
-  &:hover { }
-}
-```
-
-### 动画
-```css
-/* transition */
-transition: all 0.3s ease;
-
-/* @keyframes */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-animation: spin 1s infinite;
-```
+### CSS 新特性
+| 特性分类 | 核心语法/属性 | 解决的问题 | 替代方案 |
+| :--- | :--- | :--- | :--- |
+| 逻辑查询 | `@container scroll-state(stuck)` | 检测导航栏是否吸顶 | JS 监听 scroll 事件 |
+| 选择器 | `:has(.child)` | 根据子元素样式化父级 | JS 添加 class |
+| 布局 | `grid-template-columns: subgrid` | 嵌套网格对齐 | 复杂的 Grid 计算 |
+| 排版 | `text-wrap: balance` | 标题末尾孤行 | 手动 `<br>` 或 JS |
+| 计算 | `@function` | 复用计算逻辑 | Sass/Less 预处理器 |
+| 数据绑定| `width: attr(data-val, number)` | 数据驱动样式 | JS 操作 style 属性 |
+| 动画 | `@starting-style` | 弹窗入场动画 | 复杂的 JS 动画库 |
 
 ### CSS 函数
 | 函数 | 说明 | 示例 |
