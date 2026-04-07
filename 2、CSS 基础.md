@@ -139,10 +139,6 @@ transform: translate(-50%, -50%);
 
 ### CSS 变量（Custom Properties）
 
-### 定位与层叠上下文
-- 深入 position
-- z-index 与层叠上下文
-
 ### 层叠级别（从低到高）
 1. 背景/边框
 2. z-index < 0
@@ -183,9 +179,11 @@ transform: translate(-50%, -50%);
 - overflow：不为 visible 值时。
 - display：flex/inline-flex/inline-block/grid等。
 
+
 ### 清除浮动的方式有哪些？
 1. 伪元素 + clear: both（推荐：现代标准方案）
-2. 父元素设置 overflow: hidden/auto
+2. display: flow-root（现代方案）
+3. 父元素设置 overflow: hidden/auto（）
 ```css
 .clearfix::after {
   content: "";
@@ -195,6 +193,7 @@ transform: translate(-50%, -50%);
 ```
 
 ### 响应式
+媒体查询是基于视口大小的，导致了组件复用性差的问题
 ```css
 @media (max-width: 768px) { }   /* 手机 */
 @media (min-width: 769px) { }   /* 平板 */
@@ -204,21 +203,35 @@ transform: translate(-50%, -50%);
 围绕性能、可维护性、设计系统、浏览器原生能力替代 JS 等目标展开。
 
 ### CSS Grid 子网格（Subgrid）
-- 决嵌套 Grid 布局中对齐难题
+- 解决嵌套 Grid 布局中对齐难题
 
 ### 容器查询（Container Queries）
-- 取代媒体查询，实现组件级响应式
+- 取代媒体查询，实现组件级响应式。
 
 ### 锚点定位（Anchor Positioning）
 - 传统锚点定位方式，通过 HTML 的 `<a>` 标签和 id 属性来实现。
 - CSS position: anchor() (实验性功能)
 
 ### 性能优化
-- 选择器层级 < 3
-- 避免通配符 *
+- 减少嵌套层级
+- 选择器
+  - ID 选择器性能最快
+  - 类选择器很快（推荐）
+  - 后代选择器: 比子选择器慢，优先使用子选择器 (>)
+  - 避免通配符 *
+- 提取公共样式，删除未使用的 CSS 和 请求数
+- 使用 BEM、OOCSS 等方法论
+- 避免触发过多的重排和重绘。
+- 合理使用 z-index
+- 利用现代 CSS 特性
+  - 使用 Grid 和 Flexbox
+  - 使用容器查询
+- 关键路径渲染优化
+  - 内联关键 CSS
+  - 异步加载非关键 CSS
+  - 避免 @import
 - transform/opacity GPU 加速
 - will-change 提升合成层（谨慎）
-- 提取公共样式
 
 ### 作用域样式（Scoped Styles）
 - 通过 @scope 实现局部样式隔离（类似 Vue 的 scoped）
