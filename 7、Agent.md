@@ -6,9 +6,9 @@
     - 上下文限制
     - 输出概率性：同样输入，可能不同输出
 
-# vibe coding
+# Vibe Coding
 
-# spec coding
+# Cpec Coding
 
 # Harness Engineering
 - 四层结构
