@@ -61,7 +61,7 @@
 ## 中级
 
 ### HTML5 新特性
-- **语义化**：新增 header, footer, nav, article, section, aside, main
+- **语义化**：`<header>`, `<footer>`, `<nav>`, `<article>`, `<section>`, `<aside>`, `<main>`
 - **多媒体**：`<audio>`, `<video>`
 - **图形**：Canvas（位图）, SVG（矢量图）
 - **存储**：localStorage, sessionStorage, indexedDB
