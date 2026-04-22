@@ -83,6 +83,8 @@
   - 最佳实践：Object.prototype.toString.call()
 
 ## instanceof 的原理
+- 遍历对象原型链，和 constructor.prorotype 进行===比对
+- 对基本数据类型无效
 
 ## 堆和栈
 - 栈（Stack）
@@ -290,6 +292,28 @@ function myNew(constructor, ...args) {
 }
 ```
 
+## Object.create() 是什么？
+- Object.create(proto, 属性描述符)
+  - 创建一个新对象
+  - 将原型设为proto
+- 是事件原型式继承的推荐方式，比new XXX()更直接表达原型关系
+- 可以创建完全独立的无原型对象
+  - 使用时，注意this指向和属性查找规则
+
+## class 是什么？
+- ES6的原型语法糖
+
+## 继承方式有哪些？
+- 原型链继承
+- 构造函数继承
+- 组合继承
+- 寄生式继承
+- 寄生组合式继承（传统最优）
+- ES6的class
+
+## setTimeout 的最小延迟以及嵌套机制
+- 浏览器保护机制，嵌套超过5层会有4ms的延迟
+
 ## CommonJS 和 ESModule 的区别。它们的加载机制有何不同？
 - CommonJS
   - 来自node社区，是API
@@ -345,13 +369,17 @@ function myNew(constructor, ...args) {
 - 延迟请求：懒加载，请求队列
 - 用户体验：提示，loading
 
-## 解释 V8 引擎的垃圾回收机制。
+
 
 ## 为什么说 Map 的性能比普通对象作为 Hash 表更好？
 - {} 最初并非为纯粹的哈希表而设计，它承载了原型继承等语义。
 - 而 Map 是 ES6 专门为高效的键值对集合操作而引入的数据结构。
 
 # 安全性
+## CSP 是什么？如何防范？
+- CSP:内容安全策略
+- default-src 'self'
+
 ## 什么是 XSS 攻击？如何防范？
 
 ## 什么是同源策略和 CORS？
