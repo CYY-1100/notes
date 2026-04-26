@@ -1,5 +1,6 @@
 # _JavaScript_ 面试题汇总
-### 2. 数组去重有哪些方法？
+### 数组去重有哪些方法？
+- 优先推荐 Set 方法，代码最简洁，性能好。
 
 ## 获取元素尺寸有多少种方式?有何区别？
 offsetWidth / offsetHeight
@@ -43,10 +44,6 @@ this词法绑定：消除了运行时动态绑定的不确定性
 | 寄生组合继承 | `call` + `Object.create` | 完美方案：高效、灵活、无冗余 | 代码相对繁琐（ES6 已封装） |
 
 ### 10. _new_ 操作符都做了哪些事？
-创建一个空对象  创建一个新的空对象（{}）
-链接原型 newObj.__proto__ = Constructor.prototype
-绑定 this 并执行构造函数 Constructor.call(newObj, ...args)
-返回结果
 
 ### 11. _call、apply、bind_ 的区别 ？
 
@@ -107,11 +104,12 @@ this词法绑定：消除了运行时动态绑定的不确定性
 ### 40. 对象深拷贝与浅拷贝，单独问了 _Object.assign_
 
 ### 42. 说说 _instanceof_ 原理，并回答下面的题目
-
 ```js
 function A() {}
 function B() {}
+
 A.prototype = new B();
+
 let a = new A();
 console.log(a instanceof B); // true of false ?
 ```

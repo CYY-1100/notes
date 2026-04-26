@@ -1,9 +1,9 @@
 /**
  * 1.原型链继承
  * 缺点：
- * 1.无法向父类传参
- * 2.父类实例的引用类型属性，会被所有子类型实例共享
- * 3.contructor 有指向问题
+ * 1.无法向父类构造函数传参
+ * 2.父类构造函数中定义的引用类型的属性，会被所有子类的实例所共享。(核心的缺点)
+ * 3.contructor 有指向问题 (可以解决)
  */
 Child.prototype = new Parent(); // 核心
 Child.prototype.contructor = Child; // 修复contructor指向问题
@@ -11,8 +11,9 @@ Child.prototype.contructor = Child; // 修复contructor指向问题
 /**
  * 2.构造函数继承
  * 缺点：
- * 1.方法无法复用
- * 2.父类型原型上的方法不可见
+ * 1.无法继承父类原型（prototype）上的属性和方法
+ * 2.方法无法复用，消耗内存
+ * 3.效率较低
  */
 function Parent() {
   this.name = "Parent";

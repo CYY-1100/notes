@@ -35,9 +35,8 @@ function debounce(func, delay) {
     // 返回一个闭包函数，接收任意参数
     return function(...args) {
         // 如果之前有定时器，清除它，避免之前的 func 执行   
-        if (timer) {
-            clearTimeout(timer);
-        }   
+        if (timer) clearTimeout(timer);
+        
         // 设置新的定时器，在 delay 毫秒后执行 func
         timer = setTimeout(() => {
             // 使用 apply 保持函数原有的 this 上下文，并传递参数

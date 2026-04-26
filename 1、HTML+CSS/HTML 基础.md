@@ -37,6 +37,7 @@
 | 块级 | 独占一行，可设宽高 | div, p, h1-h6, ul, li |
 | 行内 | 共处一行，宽高由内容决定 | span, a, strong, em |
 | 行内块 | 共处一行，可设宽高 | img, input, button |
+空元素‌（也称自闭合元素或 void 元素）
 
 ### 语义化
 根据内容结构选用恰当的标签，提升可读性、可维护性、SEO 效果。
@@ -410,15 +411,6 @@ ctx.fillRect(0, 0, 800, 600);
 - CSRF Token（最有效）
 - 敏感操作二次验证
 
-### 浏览器解析过程
-1. 字节 → 字符（解码）
-2. 字符 → Token（标记化）
-3. Token → Node（节点化）
-4. Node → DOM 树（构建）
-5. CSS → CSSOM，与 DOM 合并生成渲染树
-
-> 特点：增量解析，遇到 `<script>` 阻塞（defer/async 除外）
-
 ### SEO 优化
 - 语义化标签：正确使用 h1-h6、header、nav、main
 - meta 标签：title、description、keywords
@@ -427,7 +419,7 @@ ctx.fillRect(0, 0, 800, 600);
 
 ### 可替换元素
 - 定义：内容由外部资源替换（img, video, audio, iframe, canvas, svg, input, object）
-- 特点：CSS content 无效；表现类似行内块
+- 特点：CSS content 无效；表现类似行内块;
 
 ### IndexedDB
 - 浏览器端大型数据库，支持索引
