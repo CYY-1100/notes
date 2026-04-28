@@ -1,5 +1,122 @@
 # Vue基础
 
+## Vue3做了哪些编译优化？
+- 编译器
+    - 静态树提升：实现对静态节点进行编译优化
+    - 静态属性提升：Vue3不参与更新的元素
+    - 事件的监听缓存
+    - 优化render函数
+
+## Vue3 和 Vue2 的区别？
+- 更易使用
+- 更好的TS支持
+- 速度更快
+    - 重写VDOM
+    - 编译模板优化
+    - 组件初始化更快
+    - 更新性能快1.3-2倍
+    - SSR 速度 2-3 倍
+- 体积减少
+    - 利用 Tree shaking 打包需要的代码
+- 更易维护
+    - Composition API 更加灵活
+- 接近原生
+    - 可以自定义渲染API
+
+
+## 生命周期函数
+- Vue2：创建，挂载，更新，销毁，激活
+    - beforCreate: 实例初始化之后，数据和事件尚未设置
+    - created: 实例创建完成，DOM 未生成
+
+    - beforMount: 模板以及编译成渲染函数
+    - Mounted：挂载完成，DOM 生成
+
+    - beforUpdate: 数据更新后，视图更新前
+    - Updated：视图更新后
+
+    - beforDestory: 实例销毁前
+    - destoryed：实例移除
+
+    - activated：组件激活后
+    - deactivated：组件停用后
+- Vue3：挂载，更新，销毁，激活，新增：依赖收集，依赖更新，
+    - onBeforMount: 模板以及编译成渲染函数
+    - onMounted：挂载完成，DOM 生成
+
+    - onBeforUpdate: 数据更新后，视图更新前
+    - onUpdated：视图更新后
+
+    - onBeforDestory: 实例销毁前
+    - onDestoryed：实例移除
+
+    - onActivated：组件激活后
+    - onDeactivated：组件停用后
+    
+    - onRenderTracked：响应式依赖被收集时触发
+    - onRenderTriggered：响应式依赖更新时触发
+
+## Pinia 和 Vuex 的区别？
+- Vuex
+    - 状态，变更，动作和获取器的分离
+    - TS支持较弱
+- Pinia
+    - 设计轻量
+    - 简化API调用
+    - 支持TS
+    - 支持Vue3的响应式系统
+
+## 性能优化技巧
+- 懒加载：动态导入
+- 合理使用v-if和v-show
+- 使用key属性
+- 使用computed缓存计算结果
+- 使用watch监听特定属性
+- 优化图片和资源，使用懒加载
+- 减少组件复杂度
+- 使用性能分析工具
+- 使用SSR
+
+## 数据请求放在哪个位置
+- mounted
+- 路由守卫 进行预加载
+- vuex、pinia
+- setup
+
+## computed 和 watch 区别？
+- watch
+    - 用于监听数据变化
+    - 支持异步
+    - 无缓存
+- computed
+    - 过滤数据
+    - 不支持异步
+    - 有缓存
+
+## 首屏加载慢
+- 原因有哪些？
+    - 网络
+    - 资源文件过大
+    - 重复请求
+    - 渲染时是否被阻塞
+- 解决方案
+    - 减少入口文件体积
+    - 静态资源缓存
+    - UI框架按需加载
+    - 图片压缩
+    - 开启GZip
+    - 使用SSR
+- performance.timing
+```js
+// 方法1
+dom.addEventListener('DOMCotentLoaded',()=>{
+    consolo.log('fcp')
+})
+// 方法2
+performance.getEntriesByName('first-contentfull-paint')[0].startTime
+```
+
+
 # 响应式系统原理
 ## 流程图
 ```
@@ -31,6 +148,32 @@ Effect（类似 Watcher）执行
 2. 依赖收集 (在 getter 中)
 3. 派发更新 (在 setter 中)
 
+## Proxy 和 Object.defineProperty 的区别
+- Proxy
+    - 惰性代理：访问时触发
+    - 自动监听嵌套对象和数组
+    - 无法兼容旧版浏览器
+- Object.defineProperty
+    - 全量劫持：内存占用大
+    - 数组下标操作无法监听，改写了数组的7个方法
+        - push(): 在数组末尾添加一个或多个元素。
+        - pop(): 删除并返回数组的最后一个元素。
+        - shift(): 删除并返回数组的第一个元素。
+        - unshift(): 在数组开头添加一个或多个元素。
+        - splice(): 在任意位置添加、删除或替换数组项。
+        - sort(): 对数组元素进行排序。
+        - reverse(): 反转数组中元素的顺序。
+    - 新增和删除属性无法监听
+
+## Vue3新增特性
+- framents
+    - 多个根节点
+- Teleport
+    - 传送
+- composition API （组合式 API）
+    - 集中管理，更容易维护
+- createRenderer（自定义渲染器）
+
 ## 2和3的区别
 - Vue3 使用 ES6 的 Proxy 对象。
     - 无法兼容旧版浏览器
@@ -43,7 +186,7 @@ Effect（类似 Watcher）执行
 ## nextTick 是如何工作的？
 - 宏观层面
     1. 当数据变化时，DOM 更新任务会被推入一个内部的微任务队列中。
-    2. 调用 nextTick 时，callback 也会被推入到这个微任务队列中，排在 DOM 更新任务之后。
+    2. 调用 nextTick 时，回调函数会被推入微任务队列中，排在 DOM 更新任务之后。
     3. 避免了频繁操作 DOM 带来的性能损耗。
 - 微观层面：优雅降级（主要针对 Vue 2）
     1. 首选方案：Promise.then

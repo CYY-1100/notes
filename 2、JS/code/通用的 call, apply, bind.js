@@ -1,6 +1,14 @@
 // call
 Function.prototype.myCall = function(context, ...args) {
-  // 如果 context 是 null 或 undefined，默认指向全局对象
+  // 1. 处理null/undefined，指向全局对象
+  if (context === null || context === undefined) {
+    context = typeof window !== 'undefined' ? window : globalThis;
+  }
+
+  // 2. 将基本类型转换为包装对象
+  if (typeof context !== 'object' && typeof context !== 'function') {
+      context = Object(context);
+  }
   context = context == null ? globalThis : Object(context);
 
   // 使用 Symbol 避免属性名冲突
